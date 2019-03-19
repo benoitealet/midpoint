@@ -1,0 +1,16 @@
+@import '../../styles';
+
+#btnLogin {
+    background-color: $green;
+}
+
+#fldLogin, #fldPassword {
+    border-radius: 0;
+    border-width: 0px;
+    border-bottom-width: 2px;
+    border-color: #CCC;
+
+    &:focus {
+        border-color: $green;
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "smtpPort": 1025,
+    "certINACTIF": {
+        "key": "../mJailCert/labcms.key",
+        "cert": "../mJailCert/labcms.cert"
+    },
+    "cert": null,
+    "smtpMaxSizeKo": 102400,
+    "httpPort": 8080,
+    "mongoDbUrl": "mongodb://labcms/mjail",
+    "attachmentDir": "attachments", 
+
+    "smtpClient": {
+        "host": "localhost",
+        "port": 1025,
+        "secure": false,
+        "auth": {
+            "user": "username",
+            "pass": "password"
+        }
+    },
+    "pruneDays": 10
+}

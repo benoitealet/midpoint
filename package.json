@@ -1,0 +1,29 @@
+{
+  "name": "mjail",
+  "version": "1.0.0",
+  "description": "SMTP Jail for developpers",
+  "main": "mJail.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "fs-extra": "^7.0.1",
+    "moment": "^2.24.0",
+    "sanitize-filename": "^1.6.1",
+    "ws": "^6.2.0"
+  },
+  "devDependencies": {
+    "@angular/cli": "^7.3.6",
+    "nodemon": "^1.18.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified, because i'm lazy. Do it if you want.\" && exit 1"
+  },
+  "keywords": [
+    "proxy",
+    "api",
+    "debug",
+    "man in the middle",
+    "mitm"
+  ],
+  "author": "Benoit EALET",
+  "license": "ISC"
+}
