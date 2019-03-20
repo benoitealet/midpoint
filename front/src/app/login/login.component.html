@@ -1,6 +1,9 @@
 <div class="container">
     <div class="row justify-content-md-center mt-5">
-        <form class="col-6" [formGroup]="loginForm">
+        <form class="col-6" (submit)="onSubmit($event)" [formGroup]="loginForm">
+
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
             <div class="form-group">
                 <label for="fldLogin">Login</label>
                 <input type="text" class="form-control" id="fldLogin" placeholder="Login" formControlName="login">

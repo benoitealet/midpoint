@@ -1,16 +1,15 @@
 "use strict"
 
-const WebSocket = require('ws');
-const SocketServer = WebSocket.Server;
 const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
 
-let wss = null;
-
-module.exports.createServer = function (httpPort, cert, routing, onWsClient) {
+module.exports.createServer = function (httpPort, cert, routing) {
     return new Promise((resolve, reject) => {
         try {
             const app = express();
 
+            app.use(helmet())
 
             /*
              app.use(function (req, res, next) {
@@ -19,10 +18,15 @@ module.exports.createServer = function (httpPort, cert, routing, onWsClient) {
              next();
              });
              */
+
+
+            app.use(cors());
+
+            app.use(express.json());
+
             app.use('/', express.static(__dirname + '/../public'));
 
             routing(app);
-
 
             let server;
             let mode = '';
@@ -31,7 +35,7 @@ module.exports.createServer = function (httpPort, cert, routing, onWsClient) {
                 const fs = require('fs');
 
 
-                var options = {
+                let options = {
                     key: fs.readFileSync(cert.key),
                     cert: fs.readFileSync(cert.cert),
                     requestCert: false,
@@ -40,31 +44,13 @@ module.exports.createServer = function (httpPort, cert, routing, onWsClient) {
                 server = https.createServer(options, app);
                 mode = 'HTTPS';
             } else {
-                server = app.listen(httpPort);
+                server = app;
                 mode = 'HTTP';
             }
-            
-            server.listen(httpPort, function() {
+
+            server.listen(httpPort, function () {
                 console.log(mode + ' Listen on port', httpPort);
             });
-            
-            
-            wss = new SocketServer({server});
-
-            wss.on('connection', (ws) => {
-                onWsClient(ws, wss.broadcast)
-            });
-
-            wss.broadcast = (data) => {
-                let clientCount = 0;
-                wss.clients.forEach((client) => {
-                    if (client.readyState === WebSocket.OPEN) {
-                        clientCount++;
-                        client.send(JSON.stringify(data));
-                    }
-                });
-                console.log('Broadcast to ' + clientCount + ' clients');
-            };
 
             resolve();
         } catch (e) {
@@ -72,12 +58,4 @@ module.exports.createServer = function (httpPort, cert, routing, onWsClient) {
             reject();
         }
     });
-}
-
-module.exports.broadcast = (data) => {
-    if (wss) {
-        wss.broadcast(data);
-    } else {
-        throw "Websocket is not ready";
-    }
 }
