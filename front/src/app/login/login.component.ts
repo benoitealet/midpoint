@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
                 'Content-Type': 'application/json'
             })
         };
-console.log('query:', environment.backendUrl + '/doLogin');
+
         this.http.post(
             environment.backendUrl + '/doLogin',
             JSON.stringify(this.loginForm.value),

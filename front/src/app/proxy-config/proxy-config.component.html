@@ -1,0 +1,41 @@
+<a routerLink="">
+    Home
+</a>
+
+<h1>Configuration des proxies</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Owner</th>
+            <th>Destination</th>
+            <th>Delay (ms)</th>
+            <th>Allowed to</th>
+            <th>Created at</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let proxy of proxies">
+            <td>{{proxy.name}}</td>
+            <td>{{proxy.slug}}</td>
+            <td>{{proxy.owner}}</td>
+            <td>{{proxy.destination}}</td>
+            <td>{{proxy.delay}}</td>
+            <td>{{proxy.allowedTo}}</td>
+            <td>{{proxy.createdAt | amDateFormat:'YYYY-MM-DD HH:mm'}}</td>
+            <td>
+                <button *ngIf="canDeleteProxy(proxy)" class="btn btn-sm btn-danger" (click)="deleteProxy(proxy.id)">
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button type="button" class="btn btn-sm btn-primary" (click)="showAddProxyModal()">Ajouter</button>
+
+

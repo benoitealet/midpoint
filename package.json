@@ -1,8 +1,8 @@
 {
   "name": "mjail",
   "version": "1.0.0",
-  "description": "SMTP Jail for developpers",
-  "main": "mJail.js",
+  "description": "HTTP(S) Proxy for developpers",
+  "main": "midpoint.js",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.16.4",
@@ -12,7 +12,8 @@
     "sanitize-filename": "^1.6.1",
     "sequelize": "^5.1.0",
     "sqlite": "^3.0.2",
-    "ws": "^6.2.0"
+    "ws": "^6.2.0",
+    "jsonwebtoken": "^8.4.0"
   },
   "devDependencies": {
     "@angular/cli": "^7.3.6",

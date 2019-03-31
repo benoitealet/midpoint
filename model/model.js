@@ -12,7 +12,8 @@ let Proxy = sequelize.define('proxy', {
     },
     name: {
         type: Sequelize.STRING(64),
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     description: {
         type: Sequelize.STRING(256),
@@ -20,7 +21,8 @@ let Proxy = sequelize.define('proxy', {
     },
     slug: {
         type: Sequelize.STRING(64),
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     destination: {
         type: Sequelize.STRING(256),
@@ -30,8 +32,12 @@ let Proxy = sequelize.define('proxy', {
         type: Sequelize.STRING(64),
         allowNull: false
     },
+    delay: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
     allowedTo: {
-        type: Sequelize.JSON
+        type: Sequelize.STRING(128),
     }
 });
 

@@ -20,6 +20,7 @@ module.exports.createServer = function (httpPort, cert, routing) {
              */
 
 
+            app.options('*', cors()); // include before other routes
             app.use(cors());
 
             app.use(express.json());

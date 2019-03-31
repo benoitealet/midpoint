@@ -17,7 +17,7 @@ export class LoginService {
         });
     }
 
-    getLogin(): Promise<object> {
+    getLogin(): Promise<any> {
         return new Promise((resolve, reject) => {
 
             this.localStorage.getItem('auth').subscribe((authData: any) => {

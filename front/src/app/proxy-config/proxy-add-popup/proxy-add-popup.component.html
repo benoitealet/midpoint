@@ -1,0 +1,91 @@
+<h1>Add proxy</h1>
+
+<div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <ul *ngIf="errors">
+        <li *ngFor="let error of errors">{{error}}</li>
+    </ul>
+</div>
+
+<form (submit)="onSubmitPopup()" [formGroup]="formNewProxy">
+    <input formControlName="id" name="id" type="hidden">
+
+    <div class="row">
+        <div class="form-group col-12">
+            <label>Name</label>
+            <input formControlName="name" name="name" type="text" required class="form-control" autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.name.errors && formNewProxy.controls.name.errors.required"
+                 class="text-danger">
+                Required field
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-12">
+            <label>Description</label>
+            <input formControlName="description" name="description" type="text" required class="form-control"
+                   autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.description.errors && formNewProxy.controls.description.errors.required"
+                 class="text-danger">
+                Required field
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-12">
+            <label>Slug</label>
+            <input formControlName="slug" name="slug" type="text" required class="form-control" autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.slug.errors && formNewProxy.controls.slug.errors.required"
+                 class="text-danger">
+                Required field
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-12">
+            <label>Destination</label>
+            <input formControlName="destination" name="destination" type="text" required class="form-control"
+                   autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.slug.errors && formNewProxy.controls.slug.errors.required"
+                 class="text-danger">
+                Required field
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-6">
+            <label>Owner</label>
+            <input formControlName="owner" name="owner" type="text" required class="form-control" autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.owner.errors && formNewProxy.controls.owner.errors.required"
+                 class="text-danger">
+                Required field
+            </div>
+        </div>
+        <div class="form-group col-6">
+            <label>Delay (ms)</label>
+            <input formControlName="delay" name="delay" type="number" min="0" max="10000" step="50" required
+                   class="form-control" autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.delay.errors && formNewProxy.controls.delay.errors.required"
+                 class="text-danger">
+                Required field
+            </div>
+        </div>
+        <div class="form-group col-12">
+            <label>AllowedTo <span
+                    class="text-muted">(separate logins by semicolon, space will be ignored)</span></label>
+            <input formControlName="allowedTo" name="allowedTo" type="text" class="form-control" autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.allowedTo.errors && formNewProxy.controls.allowedTo.errors.required"
+                 class="text-danger">
+                Required field
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group m-0 text-right">
+        <button type="submit" class="btn btn-primary">
+            Add
+        </button>
+    </div>
+
+</form>
