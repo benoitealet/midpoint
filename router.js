@@ -34,9 +34,7 @@ module.exports = (app) => {
     app.put('/proxyConfig/proxy', checkAuth(ProxyConfigController.putProxy));
     app.delete('/proxyConfig/proxy', checkAuth(ProxyConfigController.deleteProxy));
 
-    app.all('/proxy/:slug/*', function (req, res) {
-        res.send('');
-    });
+    app.all('/proxy/:slug/*', ProxyController.proxify);
 
     app.use(function (req, res, next) {
         res.status(404).send('Sorry can\'t find that!');
