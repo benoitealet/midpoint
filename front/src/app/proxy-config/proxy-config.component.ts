@@ -118,6 +118,8 @@ export class ProxyConfigComponent implements OnInit {
 
         const proxy = new Proxy();
 
+        proxy.encoding = 'utf-8';
+
         const d = this.dialog.open(ProxyAddPopupComponent, {
             width: '600px',
             data: proxy

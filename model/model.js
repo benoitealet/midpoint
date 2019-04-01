@@ -38,6 +38,10 @@ let Proxy = sequelize.define('proxy', {
     },
     allowedTo: {
         type: Sequelize.STRING(128),
+    },
+    encoding: {
+        type: Sequelize.STRING(8),
+        allowNull: false
     }
 });
 
@@ -49,10 +53,6 @@ let Http = sequelize.define('http', {
     },
     date: {
         type: Sequelize.DATE,
-        allowNull: false
-    },
-    channel: {
-        type: Sequelize.STRING(64),
         allowNull: false
     },
     ipSource: {
@@ -86,11 +86,6 @@ let Http = sequelize.define('http', {
 });
 
 let Header = sequelize.define('header', {
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
     name: {
         type: Sequelize.STRING(64),
         allowNull: false

@@ -1,5 +1,6 @@
 const LoginController = require('./controller/LoginController.js');
 const ProxyConfigController = require('./controller/ProxyConfigController.js');
+const ProxyController = require('./controller/ProxyController.js');
 const JwtTokenService = require('./service/jwtTokenService.js');
 checkAuth = function (callback) {
     return (req, res) => {
@@ -34,7 +35,7 @@ module.exports = (app) => {
     app.put('/proxyConfig/proxy', checkAuth(ProxyConfigController.putProxy));
     app.delete('/proxyConfig/proxy', checkAuth(ProxyConfigController.deleteProxy));
 
-    app.all('/proxy/:slug/*', ProxyController.proxify);
+    app.all('/proxy/:slug/(*)', ProxyController.proxify);
 
     app.use(function (req, res, next) {
         res.status(404).send('Sorry can\'t find that!');

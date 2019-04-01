@@ -16,11 +16,6 @@ const model = require(__dirname + '/model/model.js');
     ]);
 })();
 
-model.Proxy.findAll().then((data) => {
-    console.log(data);
-});
-
-
 webServer
     .createServer(
         config.httpPort,

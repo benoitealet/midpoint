@@ -18,12 +18,13 @@ module.exports = {
         try {
             let proxy = {
                 name: req.body.name.substring(0, 64),
+                encoding: req.body.encoding.substring(0, 8),
                 description: req.body.description.substring(0, 256),
                 slug: req.body.slug.substring(0, 64),
                 destination: req.body.destination.substring(0, 256),
                 owner: req.body.owner.substring(0, 256),
                 delay: req.body.delay,
-                allowedTo: req.body.allowedTo.substring(0, 256)
+                allowedTo: req.body.allowedTo?req.body.allowedTo.substring(0, 256):null
             }
 
             if (!auth.admin) {

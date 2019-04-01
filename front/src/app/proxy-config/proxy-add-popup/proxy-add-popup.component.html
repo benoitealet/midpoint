@@ -11,10 +11,20 @@
     <input formControlName="id" name="id" type="hidden">
 
     <div class="row">
-        <div class="form-group col-12">
+        <div class="form-group col-6">
             <label>Name</label>
             <input formControlName="name" name="name" type="text" required class="form-control" autocomplete="off">
             <div *ngIf="submitted && formNewProxy.controls.name.errors && formNewProxy.controls.name.errors.required"
+                 class="text-danger">
+                Required field
+            </div>
+        </div>
+        <div class="form-group col-6">
+            <label>Encoding</label>
+            <select formControlName="encoding" name="encoding" type="text" required class="form-control">
+                <option *ngFor="let enc of availableEncodings" [ngValue]="enc">{{enc}}</option>
+            </select>
+            <div *ngIf="submitted && formNewProxy.controls.encoding.errors && formNewProxy.controls.encoding.errors.required"
                  class="text-danger">
                 Required field
             </div>
@@ -46,7 +56,7 @@
             <label>Destination</label>
             <input formControlName="destination" name="destination" type="text" required class="form-control"
                    autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.slug.errors && formNewProxy.controls.slug.errors.required"
+            <div *ngIf="submitted && formNewProxy.controls.destination.errors && formNewProxy.controls.destination.errors.required"
                  class="text-danger">
                 Required field
             </div>

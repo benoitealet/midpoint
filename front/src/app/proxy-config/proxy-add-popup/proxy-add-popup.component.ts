@@ -21,6 +21,12 @@ export class ProxyAddPopupComponent implements OnInit {
 
     protected formNewProxy: FormGroup;
 
+    protected availableEncodings: string[] = [
+        'utf-8',
+        'ascii',
+        'latin1'
+    ];
+
     constructor(
         public dialogRef: MatDialogRef<ProxyAddPopupComponent>,
         private http: HttpClient,
@@ -30,12 +36,13 @@ export class ProxyAddPopupComponent implements OnInit {
         this.formNewProxy = new FormGroup({
             id: new FormControl(data.id, []),
             name: new FormControl(data.name, [Validators.required]),
+            encoding: new FormControl(data.encoding, [Validators.required]),
             description: new FormControl(data.description, [Validators.required]),
             slug: new FormControl(data.slug, [Validators.required]),
             destination: new FormControl(data.destination, [Validators.required]),
             owner: new FormControl(data.owner, [Validators.required]),
             delay: new FormControl(data.delay, [Validators.required]),
-            allowedTo: new FormControl(data.allowedTo, [Validators.required]),
+            allowedTo: new FormControl(data.allowedTo, []),
         });
 
     }
@@ -50,6 +57,7 @@ export class ProxyAddPopupComponent implements OnInit {
 
             let data: any = {};
             data.name = this.formNewProxy.get('name').value;
+            data.encoding = this.formNewProxy.get('encoding').value;
             data.description = this.formNewProxy.get('description').value;
             data.slug = this.formNewProxy.get('slug').value;
             data.destination = this.formNewProxy.get('destination').value;
