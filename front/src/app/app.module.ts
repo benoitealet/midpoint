@@ -9,11 +9,19 @@ import {HttpClientModule} from "@angular/common/http";
 import {MainComponent} from './main/main.component';
 import {ProxyConfigComponent} from './proxy-config/proxy-config.component';
 import {ProxyAddPopupComponent} from './proxy-config/proxy-add-popup/proxy-add-popup.component';
-import {MatDialogModule} from "@angular/material";
+import {
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule, MatInputModule,
+    MatMenuModule, MatSelectModule,
+    MatToolbarModule
+} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import {MomentModule} from 'ngx-moment';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {NavigationComponent} from './navigation/navigation.component';
 
 @NgModule({
     declarations: [
@@ -21,7 +29,8 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
         LoginComponent,
         MainComponent,
         ProxyConfigComponent,
-        ProxyAddPopupComponent
+        ProxyAddPopupComponent,
+        NavigationComponent
     ],
     imports: [
         BrowserModule,
@@ -32,7 +41,14 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
         MatDialogModule,
         BrowserAnimationsModule,
         MomentModule,
-        FontAwesomeModule
+        FontAwesomeModule,
+        MatMenuModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule
     ],
     entryComponents: [
         ProxyAddPopupComponent

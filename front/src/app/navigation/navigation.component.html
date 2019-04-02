@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+
+    <button mat-button routerLink="">
+        <span>{{title}}</span>
+    </button>
+
+    <button mat-button routerLink="proxyConfig">Configuration proxy</button>
+
+
+    <mat-menu #moreVertMenu="matMenu">
+        <button mat-menu-item>Settings</button>
+        <button mat-menu-item>Help</button>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="moreVertMenu">
+        More vert
+    </button>
+
+    <!-- This fills the remaining space of the current row -->
+    <span class="spacer"></span>
+
+    <div>
+        <fa-icon [icon]="faUser" *ngIf="!admin"></fa-icon>
+        <fa-icon [icon]="faUserCog" *ngIf="admin"></fa-icon>
+        {{ login }}
+    </div>
+</mat-toolbar>

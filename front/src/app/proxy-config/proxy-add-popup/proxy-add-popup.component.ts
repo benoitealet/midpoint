@@ -101,7 +101,7 @@ export class ProxyAddPopupComponent implements OnInit {
             });
 
 
-            ;
+
 
         } else {
             this.error = 'Form is invalid';

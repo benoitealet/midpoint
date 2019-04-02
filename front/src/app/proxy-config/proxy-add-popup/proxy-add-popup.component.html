@@ -10,90 +10,80 @@
 <form (submit)="onSubmitPopup()" [formGroup]="formNewProxy">
     <input formControlName="id" name="id" type="hidden">
 
-    <div class="row">
-        <div class="form-group col-6">
-            <label>Name</label>
-            <input formControlName="name" name="name" type="text" required class="form-control" autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.name.errors && formNewProxy.controls.name.errors.required"
-                 class="text-danger">
+    <div>
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" name="name" type="text" required autocomplete="off">
+            <mat-error *ngIf="submitted && formNewProxy.controls.name.errors && formNewProxy.controls.name.errors.required">
                 Required field
-            </div>
-        </div>
-        <div class="form-group col-6">
-            <label>Encoding</label>
-            <select formControlName="encoding" name="encoding" type="text" required class="form-control">
-                <option *ngFor="let enc of availableEncodings" [ngValue]="enc">{{enc}}</option>
-            </select>
-            <div *ngIf="submitted && formNewProxy.controls.encoding.errors && formNewProxy.controls.encoding.errors.required"
-                 class="text-danger">
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Encoding</mat-label>
+            <mat-select formControlName="encoding" name="encoding" type="text" required>
+                <mat-option *ngFor="let enc of availableEncodings" [value]="enc">{{enc}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && formNewProxy.controls.encoding.errors && formNewProxy.controls.encoding.errors.required">
                 Required field
-            </div>
-        </div>
+            </mat-error>
+        </mat-form-field>
     </div>
-    <div class="row">
-        <div class="form-group col-12">
+    <div>
+        <div>
             <label>Description</label>
-            <input formControlName="description" name="description" type="text" required class="form-control"
-                   autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.description.errors && formNewProxy.controls.description.errors.required"
-                 class="text-danger">
+            <input formControlName="description" name="description" type="text" required autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.description.errors && formNewProxy.controls.description.errors.required">
                 Required field
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group col-12">
+    <div>
+        <div>
             <label>Slug</label>
-            <input formControlName="slug" name="slug" type="text" required class="form-control" autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.slug.errors && formNewProxy.controls.slug.errors.required"
-                 class="text-danger">
+            <input formControlName="slug" name="slug" type="text" required autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.slug.errors && formNewProxy.controls.slug.errors.required">
                 Required field
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group col-12">
+    <div>
+        <div>
             <label>Destination</label>
-            <input formControlName="destination" name="destination" type="text" required class="form-control"
-                   autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.destination.errors && formNewProxy.controls.destination.errors.required"
-                 class="text-danger">
+            <input formControlName="destination" name="destination" type="text" required autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.destination.errors && formNewProxy.controls.destination.errors.required">
                 Required field
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group col-6">
+    <div>
+        <div>
             <label>Owner</label>
-            <input formControlName="owner" name="owner" type="text" required class="form-control" autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.owner.errors && formNewProxy.controls.owner.errors.required"
-                 class="text-danger">
+            <input formControlName="owner" name="owner" type="text" required autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.owner.errors && formNewProxy.controls.owner.errors.required">
                 Required field
             </div>
         </div>
-        <div class="form-group col-6">
+        <div>
             <label>Delay (ms)</label>
             <input formControlName="delay" name="delay" type="number" min="0" max="10000" step="50" required
-                   class="form-control" autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.delay.errors && formNewProxy.controls.delay.errors.required"
-                 class="text-danger">
+                   autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.delay.errors && formNewProxy.controls.delay.errors.required">
                 Required field
             </div>
         </div>
-        <div class="form-group col-12">
-            <label>AllowedTo <span
-                    class="text-muted">(separate logins by semicolon, space will be ignored)</span></label>
-            <input formControlName="allowedTo" name="allowedTo" type="text" class="form-control" autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.allowedTo.errors && formNewProxy.controls.allowedTo.errors.required"
-                 class="text-danger">
+        <div>
+            <label>AllowedTo <span>(separate logins by semicolon, space will be ignored)</span></label>
+            <input formControlName="allowedTo" name="allowedTo" type="text" autocomplete="off">
+            <div *ngIf="submitted && formNewProxy.controls.allowedTo.errors && formNewProxy.controls.allowedTo.errors.required">
                 Required field
             </div>
         </div>
     </div>
 
 
-    <div class="form-group m-0 text-right">
-        <button type="submit" class="btn btn-primary">
+    <div>
+        <button type="submit">
             Add
         </button>
     </div>
