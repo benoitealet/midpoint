@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {MatDialog} from "@angular/material";
 import {ProxyAddPopupComponent} from "./proxy-add-popup/proxy-add-popup.component";
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faTrash, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-proxy-config',
@@ -15,11 +15,12 @@ import {faTrash} from '@fortawesome/free-solid-svg-icons';
 })
 export class ProxyConfigComponent implements OnInit {
 
-    protected faTrash = faTrash;
-
-    protected proxies: Proxy[];
-    protected loading: boolean = false;
-    protected error: string = null;
+    faTrash = faTrash;
+    faPlusCircle = faPlusCircle;
+    displayedColumns: string[] = ['name', 'slug', 'owner', 'destination', 'delay', 'allowedTo', 'createdAt', 'actions'];
+    proxies: Proxy[];
+    loading: boolean = false;
+    error: string = null;
 
     private login = null;
     private admin = null;

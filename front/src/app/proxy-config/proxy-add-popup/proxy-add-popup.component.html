@@ -1,91 +1,97 @@
-<h1>Add proxy</h1>
+<h1 mat-dialog-title>Add proxy</h1>
 
-<div *ngIf="error" class="alert alert-danger">
-    {{ error }}
-    <ul *ngIf="errors">
-        <li *ngFor="let error of errors">{{error}}</li>
-    </ul>
+<div mat-dialog-content>
+
+    <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+        <ul *ngIf="errors">
+            <li *ngFor="let error of errors">{{error}}</li>
+        </ul>
+    </div>
+
+    <form (submit)="onSubmitPopup()" [formGroup]="formNewProxy">
+        <input formControlName="id" name="id" type="hidden">
+
+        <div>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" name="name" type="text" required autocomplete="off">
+                <mat-error *ngIf="submitted && formNewProxy.controls.name.errors && formNewProxy.controls.name.errors.required">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Encoding</mat-label>
+                <mat-select formControlName="encoding" name="encoding" type="text" required>
+                    <mat-option *ngFor="let enc of availableEncodings" [value]="enc">{{enc}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="submitted && formNewProxy.controls.encoding.errors && formNewProxy.controls.encoding.errors.required">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <input matInput formControlName="description" name="description" type="text" required autocomplete="off" />
+                <mat-error *ngIf="submitted && formNewProxy.controls.description.errors && formNewProxy.controls.description.errors.required">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Slug</mat-label>
+                <input matInput formControlName="slug" name="slug" type="text" required autocomplete="off" />
+                <mat-error *ngIf="submitted && formNewProxy.controls.slug.errors && formNewProxy.controls.slug.errors.required">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Destination</mat-label>
+                <input matInput formControlName="destination" name="destination" type="text" required autocomplete="off" />
+                <mat-error *ngIf="submitted && formNewProxy.controls.destination.errors && formNewProxy.controls.destination.errors.required">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Owner</mat-label>
+                <input matInput formControlName="owner" name="owner" type="text" required autocomplete="off" />
+                <mat-error *ngIf="submitted && formNewProxy.controls.owner.errors && formNewProxy.controls.owner.errors.required">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Delay (ms)</mat-label>
+                <input matInput formControlName="delay" name="delay" type="number" min="0" max="10000" step="50" required
+                       autocomplete="off" />
+                <mat-error *ngIf="submitted && formNewProxy.controls.delay.errors && formNewProxy.controls.delay.errors.required">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>AllowedTo <span>(separate logins by semicolon, space will be ignored)</span></mat-label>
+                <input matInput formControlName="allowedTo" name="allowedTo" type="text" autocomplete="off" />
+                <mat-error *ngIf="submitted && formNewProxy.controls.allowedTo.errors && formNewProxy.controls.allowedTo.errors.required">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+
+        <div>
+            <button mat-button type="submit">
+                Add
+            </button>
+        </div>
+
+    </form>
+
 </div>
-
-<form (submit)="onSubmitPopup()" [formGroup]="formNewProxy">
-    <input formControlName="id" name="id" type="hidden">
-
-    <div>
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" name="name" type="text" required autocomplete="off">
-            <mat-error *ngIf="submitted && formNewProxy.controls.name.errors && formNewProxy.controls.name.errors.required">
-                Required field
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Encoding</mat-label>
-            <mat-select formControlName="encoding" name="encoding" type="text" required>
-                <mat-option *ngFor="let enc of availableEncodings" [value]="enc">{{enc}}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="submitted && formNewProxy.controls.encoding.errors && formNewProxy.controls.encoding.errors.required">
-                Required field
-            </mat-error>
-        </mat-form-field>
-    </div>
-    <div>
-        <div>
-            <label>Description</label>
-            <input formControlName="description" name="description" type="text" required autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.description.errors && formNewProxy.controls.description.errors.required">
-                Required field
-            </div>
-        </div>
-    </div>
-    <div>
-        <div>
-            <label>Slug</label>
-            <input formControlName="slug" name="slug" type="text" required autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.slug.errors && formNewProxy.controls.slug.errors.required">
-                Required field
-            </div>
-        </div>
-    </div>
-    <div>
-        <div>
-            <label>Destination</label>
-            <input formControlName="destination" name="destination" type="text" required autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.destination.errors && formNewProxy.controls.destination.errors.required">
-                Required field
-            </div>
-        </div>
-    </div>
-    <div>
-        <div>
-            <label>Owner</label>
-            <input formControlName="owner" name="owner" type="text" required autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.owner.errors && formNewProxy.controls.owner.errors.required">
-                Required field
-            </div>
-        </div>
-        <div>
-            <label>Delay (ms)</label>
-            <input formControlName="delay" name="delay" type="number" min="0" max="10000" step="50" required
-                   autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.delay.errors && formNewProxy.controls.delay.errors.required">
-                Required field
-            </div>
-        </div>
-        <div>
-            <label>AllowedTo <span>(separate logins by semicolon, space will be ignored)</span></label>
-            <input formControlName="allowedTo" name="allowedTo" type="text" autocomplete="off">
-            <div *ngIf="submitted && formNewProxy.controls.allowedTo.errors && formNewProxy.controls.allowedTo.errors.required">
-                Required field
-            </div>
-        </div>
-    </div>
-
-
-    <div>
-        <button type="submit">
-            Add
-        </button>
-    </div>
-
-</form>
