@@ -1,1 +1,57 @@
+<mat-form-field>
+    <mat-label>Proxy:</mat-label>
+    <mat-select required [formControl]="proxySelectControl" (selectionChange)="updateCallsList($event.value)">
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let p of proxyList" [value]="p">
+            {{p.name}}
+        </mat-option>
+    </mat-select>
+    <mat-hint>{{proxySelectControl.value?.description}}</mat-hint>
+</mat-form-field>
 
+
+<div *ngIf="proxySelectControl.value">
+
+    <div *ngIf="!callsList">
+        Loading
+    </div>
+    <table *ngIf="callsList" mat-table [dataSource]="callsList" class="mat-elevation-z8">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="ipSource">
+            <th mat-header-cell *matHeaderCellDef> Ip Source </th>
+            <td mat-cell *matCellDef="let element"> {{element.ipSource}} </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="requestVerb">
+            <th mat-header-cell *matHeaderCellDef> Verb </th>
+            <td mat-cell *matCellDef="let element"> {{element.requestVerb}} </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="requestUrl">
+            <th mat-header-cell *matHeaderCellDef> URL </th>
+            <td mat-cell *matCellDef="let element"> {{element.requestUrl}} </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="requestStatus">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.requestStatus}} </td>
+
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+    </table>
+
+</div>

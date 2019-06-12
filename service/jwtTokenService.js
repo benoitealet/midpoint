@@ -8,7 +8,7 @@ const publicKey = fs.readFileSync(__dirname + '/../config/jwt/jwtPublic.key', 'u
 
 module.exports = {
 
-    generateToken(login) {
+    generateToken(login, admin) {
         const i = 'Midpoint';          // Issuer
         const s = login;        // Subject
         const a = login + '@midpoint'; // Audience
@@ -16,7 +16,7 @@ module.exports = {
         let payload = {
             login: login,
             loginDate: moment().toISOString(),
-            admin: true
+            admin: admin
         };
 
         let signOptions = {

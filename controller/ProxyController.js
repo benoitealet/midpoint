@@ -7,7 +7,7 @@ function getBody(req, max) {
         let data = '';
         req.on('data', function (chunk) {
             data += chunk
-            if(data.length > max) {
+            if (data.length > max) {
                 reject('Body too big');
             }
         });
@@ -15,6 +15,10 @@ function getBody(req, max) {
             resolve(data);
         });
     });
+}
+
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 module.exports = {
@@ -46,10 +50,15 @@ module.exports = {
                 proxy: proxyDefinition.id
             });
 
+            let hasHostHeader = false;
+
             let headers = [];
             for (let key in req.headers) {
                 // check if the property/key is defined in the object itself, not in parent
                 if (req.headers.hasOwnProperty(key)) {
+                    if(key.toLowerCase() == 'host') {
+                        hasHostHeader = true;
+                    }
                     headers.push({
                         name: key,
                         value: req.headers[key],
@@ -62,14 +71,28 @@ module.exports = {
             let finishPromises = [];
             finishPromises.push(http.save());
 
+
+            const url = proxyDefinition.destination + '/' + req.params['0'];
+            console.log('REQUEST', url);
+            req.headers['host'] = require('url').parse(url).hostname;
+
+            if(proxyDefinition.delay) {
+                console.log('Delay!', proxyDefinition.delay);
+                await timeout(proxyDefinition.delay);
+                console.log('Delayed!');
+            }
+
             let response = await axios({
                 method: req.method,
-                url: proxyDefinition.destination + '/' + req.params['0'],
+                url: url,
                 data: body,
                 headers: req.headers,
+                validateStatus: (status) => true,
+                transformResponse: (res) => {
+                    // Do your own parsing here if needed ie JSON.parse(res);
+                    return res;
+                },
             });
-
-            res.status(response.status);
 
             for (let key in response.headers) {
                 // check if the property/key is defined in the object itself, not in parent
@@ -89,6 +112,7 @@ module.exports = {
 
 
 
+            res.status(response.status);
             res.send(response.data);
 
             finishPromises.push(http.save());
@@ -100,8 +124,5 @@ module.exports = {
 
 
         }
-
-
     }
-
 }

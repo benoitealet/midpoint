@@ -1,5 +1,5 @@
 
-export class Proxy {
+export class ProxyModel {
     id: number;
     name: string;
     encoding: string;

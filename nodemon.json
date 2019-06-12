@@ -1,6 +1,5 @@
 {
     "ignore": [
-        "front/*",
-        "static/front/*"
+        "front/*"
     ]
 }

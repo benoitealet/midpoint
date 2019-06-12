@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add proxy</h1>
+<h1 mat-dialog-title>{{ formNewProxy.controls.id.value ? 'Update': 'Add' }} proxy</h1>
 
 <div mat-dialog-content>
 
@@ -86,9 +86,9 @@
         </div>
 
 
-        <div>
-            <button mat-button type="submit">
-                Add
+        <div style="text-align: right">
+            <button mat-button type="submit" color="primary">
+                {{ formNewProxy.controls.id.value ? 'Update': 'Add' }}
             </button>
         </div>
 

@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Proxy} from "../proxy";
+import {ProxyModel} from "../proxyModel";
 import {LoginService} from "../login.service";
 import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {MatDialog} from "@angular/material";
 import {ProxyAddPopupComponent} from "./proxy-add-popup/proxy-add-popup.component";
-import {faTrash, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
+import {faTrash, faPlusCircle, faEdit} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'app-proxy-config',
@@ -17,8 +17,10 @@ export class ProxyConfigComponent implements OnInit {
 
     faTrash = faTrash;
     faPlusCircle = faPlusCircle;
+    faEdit = faEdit;
+
     displayedColumns: string[] = ['name', 'slug', 'owner', 'destination', 'delay', 'allowedTo', 'createdAt', 'actions'];
-    proxies: Proxy[];
+    proxies: ProxyModel[];
     loading: boolean = false;
     error: string = null;
 
@@ -26,19 +28,7 @@ export class ProxyConfigComponent implements OnInit {
     private admin = null;
 
     constructor(private loginService: LoginService, private http: HttpClient, private router: Router, private dialog: MatDialog) {
-        this.proxies = [
-            // {
-            //     id: null,
-            //     name: 'Hello',
-            //     description: 'Hello world?',
-            //     slug: 'hello_world',
-            //     destination: 'http://labcms:3000',
-            //     owner: 'admin',
-            //     delay: 200,
-            //     allowedTo: ['user1', 'user2']
-            // }
-        ];
-
+        this.proxies = [];
     }
 
     async ngOnInit() {
@@ -85,6 +75,9 @@ export class ProxyConfigComponent implements OnInit {
     canDeleteProxy(proxy) {
         return ((proxy.owner === this.login) || this.admin)
     }
+    canEditProxy(proxy) {
+        return ((proxy.owner === this.login) || this.admin)
+    }
 
     async deleteProxy(id) {
         const jwtToken = (await this.loginService.getJwtToken());
@@ -117,9 +110,20 @@ export class ProxyConfigComponent implements OnInit {
     showAddProxyModal() {
 
 
-        const proxy = new Proxy();
+        const proxy = new ProxyModel();
 
         proxy.encoding = 'utf-8';
+
+        const d = this.dialog.open(ProxyAddPopupComponent, {
+            width: '600px',
+            data: proxy
+        });
+        d.afterClosed().subscribe(async () => {
+            this.loadProxies();
+        });
+    }
+
+    showEditProxyModal(proxy) {
 
         const d = this.dialog.open(ProxyAddPopupComponent, {
             width: '600px',

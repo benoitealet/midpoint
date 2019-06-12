@@ -16,11 +16,17 @@ const model = require(__dirname + '/model/model.js');
     ]);
 })();
 
+// model.Proxy.findAll().then((data) => {
+//     console.log(data);
+// });
+
+
 webServer
     .createServer(
         config.httpPort,
         config.cert,
-        require('./router.js')
+        require('./router.js'),
+        require('./controller/websocketController.js')(model)
     ).catch((e) => {
     console.log(e);
     process.exit(1);

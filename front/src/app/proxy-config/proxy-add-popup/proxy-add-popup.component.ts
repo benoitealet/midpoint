@@ -1,7 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {Proxy} from "../../proxy";
+import {ProxyModel} from "../../proxyModel";
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {LoginService} from "../../login.service";
@@ -32,7 +32,7 @@ export class ProxyAddPopupComponent implements OnInit {
         private http: HttpClient,
         private loginService: LoginService,
         private router: Router,
-        @Inject(MAT_DIALOG_DATA) public data: Proxy) {
+        @Inject(MAT_DIALOG_DATA) public data: ProxyModel) {
         this.formNewProxy = new FormGroup({
             id: new FormControl(data.id, []),
             name: new FormControl(data.name, [Validators.required]),
@@ -56,6 +56,7 @@ export class ProxyAddPopupComponent implements OnInit {
             this.submitted = true;
 
             let data: any = {};
+            data.id = this.formNewProxy.get('id').value;
             data.name = this.formNewProxy.get('name').value;
             data.encoding = this.formNewProxy.get('encoding').value;
             data.description = this.formNewProxy.get('description').value;
@@ -77,7 +78,7 @@ export class ProxyAddPopupComponent implements OnInit {
             };
 
             // Pousse dans la liste
-            this.http.put(
+            this.http[data.id?'patch':'put'](
                 environment.backendUrl + '/proxyConfig/proxy',
                 data,
                 httpOptions

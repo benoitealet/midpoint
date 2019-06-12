@@ -56,6 +56,10 @@
                 <fa-icon [icon]="faTrash" class="fa-2x"></fa-icon>
                 Delete
             </button>
+            <button mat-flat-button color="warn" *ngIf="canEditProxy(element)" (click)="showEditProxyModal(element)">
+                <fa-icon [icon]="faEdit" class="fa-2x"></fa-icon>
+                Edit
+            </button>
         </td>
         <td class="cell-right" mat-footer-cell *matFooterCellDef>
             <button mat-icon-button color="primary" (click)="showAddProxyModal()">
