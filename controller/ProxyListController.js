@@ -20,7 +20,10 @@ module.exports = {
             let data = await model.Http.findAll({
                 where: {
                     proxy: req.params.proxyId
-                }
+                },
+                order: [
+                    ['date', 'DESC']
+                ]
             });
             res.send(data);
         } catch (e) {

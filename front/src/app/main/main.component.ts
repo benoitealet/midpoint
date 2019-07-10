@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {FormControl, Validators} from "@angular/forms";
+import {MatPaginator} from "@angular/material";
 
 @Component({
     selector: 'app-main',
@@ -17,7 +18,7 @@ export class MainComponent implements OnInit {
     private login = null;
     private admin = null;
 
-    displayedColumns: string[] = ['date', 'ipSource', 'requestVerb', 'requestUrl', 'requestStatus'];
+    displayedColumns: string[] = ['date', 'ipSource', 'requestVerb', 'requestUrl', 'responseStatus'];
     proxyList: ProxyModel[];
     callsList: CallModel[];
     error: string = null;

@@ -73,14 +73,15 @@ module.exports = {
 
 
             const url = proxyDefinition.destination + '/' + req.params['0'];
-            console.log('REQUEST', url);
+
             req.headers['host'] = require('url').parse(url).hostname;
 
             if(proxyDefinition.delay) {
-                console.log('Delay!', proxyDefinition.delay);
+                console.log('DELAY', url);
                 await timeout(proxyDefinition.delay);
-                console.log('Delayed!');
             }
+
+            console.log('REQUEST', url);
 
             let response = await axios({
                 method: req.method,
@@ -93,6 +94,8 @@ module.exports = {
                     return res;
                 },
             });
+
+            console.log('RESPONSE', url, {status: response.status});
 
             for (let key in response.headers) {
                 // check if the property/key is defined in the object itself, not in parent

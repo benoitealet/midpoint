@@ -25,8 +25,7 @@ webServer
     .createServer(
         config.httpPort,
         config.cert,
-        require('./router.js'),
-        require('./controller/websocketController.js')(model)
+        require('./router.js')
     ).catch((e) => {
     console.log(e);
     process.exit(1);
