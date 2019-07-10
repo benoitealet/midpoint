@@ -16,10 +16,7 @@
 
 <div *ngIf="proxySelectControl.value">
 
-    <div *ngIf="!callsList">
-        Loading
-    </div>
-    <table *ngIf="callsList" mat-table [dataSource]="callsList" class="mat-elevation-z8" style="width: 100%;">
+    <table mat-table [dataSource]="callsDataSource" class="mat-elevation-z8" style="width: 100%;">
 
         <!-- Position Column -->
         <ng-container matColumnDef="date">
@@ -55,9 +52,15 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-
+        <tr mat-row
+            *matRowDef="let row; columns: displayedColumns;"
+            (click)="selectCall(row)"
+            [style.background]="(this.selectedCallRow == row)?'lightblue' : ''"
+        ></tr>
     </table>
-
 </div>
+
+<call-detail *ngIf="this.selectedCallRow" [proxy]="this.proxySelectControl.value" [call]="this.selectedCallRow">
+
+</call-detail>
+

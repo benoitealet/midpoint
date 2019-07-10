@@ -6,7 +6,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {FormControl, Validators} from "@angular/forms";
-import {MatPaginator} from "@angular/material";
+import {MatTableDataSource} from "@angular/material";
 
 @Component({
     selector: 'app-main',
@@ -20,8 +20,10 @@ export class MainComponent implements OnInit {
 
     displayedColumns: string[] = ['date', 'ipSource', 'requestVerb', 'requestUrl', 'responseStatus'];
     proxyList: ProxyModel[];
-    callsList: CallModel[];
+    callsDataSource = new MatTableDataSource<CallModel>();
     error: string = null;
+
+    selectedCallRow: CallModel = null;
 
     proxySelectControl = new FormControl('', [Validators.required]);
 
@@ -69,31 +71,40 @@ export class MainComponent implements OnInit {
 
     async updateCallsList(proxy) {
 
-        this.callsList = null;
 
-        const jwtToken = (await this.loginService.getJwtToken());
+        if (proxy && proxy.id) {
+            const jwtToken = (await this.loginService.getJwtToken());
 
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': JSON.stringify(jwtToken)
-            })
+            const httpOptions = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Authorization': JSON.stringify(jwtToken)
+                })
 
-        };
+            };
 
-        this.http.get(
-            environment.backendUrl + '/proxyList/calls/' + proxy.id,
-            httpOptions
-        ).subscribe((data: any) => {
-            this.callsList = data;
-        }, error => {
-            if (error.status === 403) {
-                this.router.navigateByUrl('/login');
-            } else {
-                this.error = 'Une erreur inconnue est survenue';
-                console.log(error);
-            }
-        });
+            this.http.get(
+                environment.backendUrl + '/proxyList/calls/' + proxy.id,
+                httpOptions
+            ).subscribe((data: any) => {
+                this.callsDataSource.data = data;
+            }, error => {
+                if (error.status === 403) {
+                    this.router.navigateByUrl('/login');
+                } else {
+                    this.error = 'Une erreur inconnue est survenue';
+                    console.log(error);
+                }
+            });
+        }
 
+    }
+
+    selectCall(row) {
+        if(this.selectedCallRow == row) {
+            this.selectedCallRow = null;
+        } else {
+            this.selectedCallRow = row;
+        }
     }
 }

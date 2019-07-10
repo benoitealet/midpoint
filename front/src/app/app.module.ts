@@ -14,7 +14,7 @@ import {
     MatDialogModule,
     MatFormFieldModule,
     MatIconModule, MatInputModule,
-    MatMenuModule, MatSelectModule, MatTableModule,
+    MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule,
     MatToolbarModule
 } from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -23,6 +23,7 @@ import {MomentModule} from 'ngx-moment';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NavigationComponent} from './navigation/navigation.component';
 import {CdkColumnDef, CdkTableModule} from "@angular/cdk/table";
+import { CallDetailComponent } from './main/call-detail/call-detail.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import {CdkColumnDef, CdkTableModule} from "@angular/cdk/table";
         MainComponent,
         ProxyConfigComponent,
         ProxyAddPopupComponent,
-        NavigationComponent
+        NavigationComponent,
+        CallDetailComponent
     ],
     imports: [
         BrowserModule,
@@ -51,7 +53,8 @@ import {CdkColumnDef, CdkTableModule} from "@angular/cdk/table";
         MatInputModule,
         MatSelectModule,
         MatTableModule,
-        CdkTableModule
+        CdkTableModule,
+        MatTabsModule
     ],
     entryComponents: [
         ProxyAddPopupComponent
