@@ -19,3 +19,39 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
 body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+
+.urlBase {
+    color: gray;
+}
+.urlPath {
+    color: #0077EE;
+}
+.urlQuery {
+    color: #EE00BB;
+}
+
+.httpErrorCode {
+    background-color: #CCCCCC;
+    font-size: 0.8em;
+    font-weight: bolder;
+    border-radius: 5px;
+    padding: 2px 5px;
+    color: white;
+}
+
+.httpErrorCode[class*="httpErrorCode_1"] {
+    background-color: cyan;
+}
+.httpErrorCode[class*="httpErrorCode_2"] {
+    background-color: #058B00;
+}
+.httpErrorCode[class*="httpErrorCode_3"] {
+    background-color: orange;
+}
+.httpErrorCode[class*="httpErrorCode_4"] {
+    background-color: #BB22EE;
+}
+.httpErrorCode[class*="httpErrorCode_5"] {
+    background-color: #DD00AA;
+}

@@ -1,5 +1,4 @@
 const model = require('../model/model.js');
-const bodyParser = require('body-parser');
 const axios = require('axios');
 
 function getBody(req, max) {
@@ -22,7 +21,7 @@ function timeout(ms) {
 }
 
 module.exports = {
-    proxify: async function (req, res) {
+    proxify: async function (req, res, wsDispatcher) {
         let timeRequest = new Date();
 
         let body = await getBody(req, 128 * 1024);
@@ -40,17 +39,19 @@ module.exports = {
             });
         } else {
 
-
             let http = model.Http.build({
                 date: timeRequest,
                 ipSource: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
                 requestVerb: req.method,
                 requestUrl: req.params['0'],
+                requestQuery: require('url').parse(req.url,false).query,
                 requestBody: body,
                 proxy: proxyDefinition.id
             });
 
             let hasHostHeader = false;
+
+            await http.save();
 
             let headers = [];
             for (let key in req.headers) {
@@ -68,10 +69,6 @@ module.exports = {
                 }
             }
 
-            let finishPromises = [];
-            finishPromises.push(http.save());
-
-
             const url = proxyDefinition.destination + '/' + req.params['0'];
 
             req.headers['host'] = require('url').parse(url).hostname;
@@ -82,18 +79,25 @@ module.exports = {
             }
 
             console.log('REQUEST', url);
-
-            let response = await axios({
-                method: req.method,
-                url: url,
-                data: body,
-                headers: req.headers,
-                validateStatus: (status) => true,
-                transformResponse: (res) => {
-                    // Do your own parsing here if needed ie JSON.parse(res);
-                    return res;
-                },
-            });
+            let response = {};
+            try {
+                response = await axios({
+                    method: req.method,
+                    url: url,
+                    data: body,
+                    headers: req.headers,
+                    validateStatus: (status) => true,
+                    transformResponse: (res) => {
+                        // Do your own parsing here if needed ie JSON.parse(res);
+                        return res;
+                    },
+                });
+            } catch(e) {
+                console.log(e);
+                response = {
+                    status: 600,
+                }
+            }
 
             console.log('RESPONSE', url, {status: response.status});
 
@@ -113,16 +117,20 @@ module.exports = {
             http.responseBody = response.data;
             http.responseStatus = response.status;
 
-
-
             res.status(response.status);
-            res.send(response.data);
 
-            finishPromises.push(http.save());
+            await http.save();
 
-            res.end();
+            wsDispatcher.broadcast(JSON.stringify({
+                type: 'call',
+                call: http
+            }), (client) => {
+                const allowedTo = proxyDefinition.allowedTo?proxyDefinition.allowedTo.split(';'):[];
+                allowedTo.push(proxyDefinition.owner);
+                return allowedTo.includes(client.auth.sub);
+            });
 
-            Promise.all(finishPromises);
+            res.end(response.data);
             model.Header.bulkCreate(headers);
 
 

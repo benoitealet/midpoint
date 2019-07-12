@@ -1,0 +1,14 @@
+<table class="headerViewer-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let header of filtered">
+            <td>{{ header.name }}</td>
+            <td>{{ header.value }}</td>
+        </tr>
+    </tbody>
+</table>

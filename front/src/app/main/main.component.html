@@ -14,7 +14,7 @@
 <div *ngIf="proxySelectControl.value?.description" class="proxySelectorHintSpacer">
 </div>
 
-<div *ngIf="proxySelectControl.value">
+<div *ngIf="proxySelectControl.value" class="tableCallContainer">
 
     <table mat-table [dataSource]="callsDataSource" class="mat-elevation-z8" style="width: 100%;">
 
@@ -40,19 +40,24 @@
         <ng-container matColumnDef="requestUrl">
             <th mat-header-cell *matHeaderCellDef> URL</th>
             <td mat-cell *matCellDef="let element">
-                <span style="color: gray">{{proxySelectControl.value?.destination}}/</span>{{element.requestUrl}}
+                <span class="urlBase">{{proxySelectControl.value?.destination}}/</span><span class="urlPath">{{element.requestUrl}}</span><span class="urlQuery">{{element.requestQuery?'?'+element.requestQuery:''}}</span>
             </td>
 
         </ng-container>
 
         <ng-container matColumnDef="responseStatus">
             <th mat-header-cell *matHeaderCellDef> Status</th>
-            <td mat-cell *matCellDef="let element"> {{element.responseStatus}} </td>
+            <td mat-cell *matCellDef="let element">
+                <span class="httpErrorCode httpErrorCode_{{element.responseStatus}}">
+                    {{ element.responseStatus?element.responseStatus:'---'}}
+                </span>
+            </td>
 
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-header-row class="rowHeaderCall" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row
+            class="rowCall"
             *matRowDef="let row; columns: displayedColumns;"
             (click)="selectCall(row)"
             [style.background]="(this.selectedCallRow == row)?'lightblue' : ''"
@@ -60,7 +65,10 @@
     </table>
 </div>
 
-<call-detail *ngIf="this.selectedCallRow" [proxy]="this.proxySelectControl.value" [call]="this.selectedCallRow">
-
+<call-detail *ngIf="this.selectedCallRow && this.proxySelectControl.value"
+             [proxy]="this.proxySelectControl.value"
+             [call]="this.selectedCallRow"
+             class="mat-elevation-z8"
+>
 </call-detail>
 

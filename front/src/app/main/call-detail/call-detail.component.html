@@ -1,12 +1,48 @@
 <div class="callDetailHeader">
-    <b>{{ displayCall?.requestVerb}} </b>
+
+    <div class="httpErrorCode httpErrorCode_{{displayCall.responseStatus}}">
+        {{ displayCall.responseStatus?displayCall.responseStatus:'---'}}
+    </div>
+
+    <b>{{ displayCall.requestVerb}} </b>
     <span>
-        <span style="color: gray">{{ displayProxy?.destination }}/</span>{{ displayCall?.requestUrl }}
+        <span class="urlBase">{{displayProxy.destination}}/</span><span class="urlPath">{{displayCall.requestUrl}}</span><span class="urlQuery">{{displayCall.requestQuery?'?'+displayCall.requestQuery:''}}</span>
     </span>
 </div>
 
 
-<mat-tab-group>
-    <mat-tab label="Request"> Content 1</mat-tab>
-    <mat-tab label="Response"> Content 2</mat-tab>
+<mat-tab-group class="callDetailTabsGroup">
+    <mat-tab label="Request">
+        <mat-tab-group class="subtab">
+            <mat-tab label="Raw">
+                <pre>{{displayCall.requestBody}}</pre>
+            </mat-tab>
+            <mat-tab label="JSON">
+                <json-viewer [json]="displayCall.requestBody"></json-viewer>
+            </mat-tab>
+            <mat-tab label="UrlEncoded">
+                <body-viewer [data]="displayCall.requestBody"></body-viewer>
+            </mat-tab>
+            <mat-tab label="Headers">
+                <header-viewer [data]="headers" type="REQUEST"></header-viewer>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-tab>
+
+    <mat-tab label="Response">
+        <mat-tab-group class="subtab">
+            <mat-tab label="Raw">
+                <pre>{{displayCall.responseBody}}</pre>
+            </mat-tab>
+            <mat-tab label="JSON">
+                <json-viewer [json]="displayCall.responseBody"></json-viewer>
+            </mat-tab>
+            <mat-tab label="Html">
+                <iframe class="callDetailIframeResponseBody" [srcdoc]="displayCall.responseBody" sandbox></iframe>
+            </mat-tab>
+            <mat-tab label="Headers">
+                <header-viewer [data]="headers" type="RESPONSE"></header-viewer>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-tab>
 </mat-tab-group>

@@ -69,6 +69,9 @@ let Http = sequelize.define('http', {
         type: Sequelize.STRING(2048),
         allowNull: false
     },
+    requestQuery: {
+        type: Sequelize.STRING(2048)
+    },
     requestBody: {
         type: Sequelize.TEXT
     },

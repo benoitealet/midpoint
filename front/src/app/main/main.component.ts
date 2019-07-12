@@ -18,6 +18,8 @@ export class MainComponent implements OnInit {
     private login = null;
     private admin = null;
 
+    private ws:WebSocket = null;
+
     displayedColumns: string[] = ['date', 'ipSource', 'requestVerb', 'requestUrl', 'responseStatus'];
     proxyList: ProxyModel[];
     callsDataSource = new MatTableDataSource<CallModel>();
@@ -70,7 +72,10 @@ export class MainComponent implements OnInit {
 
 
     async updateCallsList(proxy) {
-
+        if(this.ws) {
+            console.log('Close last ws');
+            this.ws.close();
+        }
 
         if (proxy && proxy.id) {
             const jwtToken = (await this.loginService.getJwtToken());
@@ -96,8 +101,27 @@ export class MainComponent implements OnInit {
                     console.log(error);
                 }
             });
-        }
 
+            //prepare websocket
+            console.log('Listen WS on ', 'ws://localhost:8080/ws/proxy/' + proxy.id);
+
+            this.ws = new WebSocket('ws://localhost:8080/ws/proxy/' + proxy.id);
+
+            this.ws.onopen = (evOpen: Event) => {
+                this.ws.onmessage = (ev: MessageEvent) => {
+                    const data = JSON.parse(ev.data);
+                    if(data.type == 'call') {
+                        const viewData = this.callsDataSource.data;
+                        viewData.unshift(data.call);
+                        this.callsDataSource.data = viewData;
+                    }
+                };
+
+                this.ws.send(JSON.stringify({
+                    auth: jwtToken
+                }));
+            };
+        }
     }
 
     selectCall(row) {

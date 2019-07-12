@@ -2,6 +2,7 @@ const LoginController = require('./controller/LoginController.js');
 const ProxyConfigController = require('./controller/ProxyConfigController.js');
 const ProxyController = require('./controller/ProxyController.js');
 const ProxyListController = require('./controller/ProxyListController.js');
+const WebsocketController = require('./controller/WebsocketController.js');
 const JwtTokenService = require('./service/jwtTokenService.js');
 checkAuth = function (callback) {
     return (req, res) => {
@@ -29,6 +30,12 @@ checkAuth = function (callback) {
 }
 
 module.exports = (app) => {
+    app.disable('x-powered-by');
+
+    const expressJs = require('express-ws')(app);
+    const wsBroadcaster = WebsocketController.getBroadcaster(expressJs);
+
+    app.ws('/ws/proxy/:proxyId', WebsocketController.init);
 
     app.post('/doLogin', LoginController.doLogin);
 
@@ -39,8 +46,9 @@ module.exports = (app) => {
 
     app.get('/proxyList/list', checkAuth(ProxyListController.getList));
     app.get('/proxyList/calls/:proxyId', checkAuth(ProxyListController.getCalls));
+    app.get('/proxyList/callHeaders/:httpId', checkAuth(ProxyListController.getCallHeaders));
 
-    app.all('/proxy/:slug/*', ProxyController.proxify);
+    app.all('/proxy/:slug/*', (req, res) => ProxyController.proxify(req, res, wsBroadcaster));
 
     app.use(function (req, res, next) {
         res.status(404).send('Sorry can\'t find that!');

@@ -4,6 +4,7 @@ export class CallModel {
     ipSource: string;
     requestVerb: string;
     requestUrl: string;
+    requestQuery: string;
     requestBody: string;
     responseStatus: number;
     responseBody: string;

@@ -1,3 +1,12 @@
+:host {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 0;
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
 .proxySelectorField {
     width: 100%;
 }
@@ -7,13 +16,24 @@
     display: block;
 }
 
+.tableCallContainer {
+    min-height: 0;
+    flex-shrink: 1;
+    flex-grow: 1;
+    overflow: auto;
+}
+
 call-detail {
-    position: fixed;
-    bottom: 0px;
-    background-color: white;
     border-top: 1px solid gray;
-    height: 20%;
     min-height: 400px;
     width: 100%;
 }
 
+::ng-deep tr.mat-header-row.rowHeaderCall {
+    height: 36px;
+}
+
+::ng-deep tr.mat-row.rowCall {
+    height: 24px;
+    cursor: pointer;
+}

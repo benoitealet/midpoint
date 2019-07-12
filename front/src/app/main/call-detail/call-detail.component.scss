@@ -1,8 +1,45 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+mat-tab-group {
+    overflow: auto;
+
+}
+
+::ng-deep .mat-tab-body-wrapper {
+    flex-grow: 1 !important;
+}
+
+::ng-deep .subtab .mat-tab-body {
+    max-height: 318px;
+}
+::ng-deep .subtab .mat-tab-list {
+    background-color: #607d8b;
+}
+::ng-deep .subtab .mat-ink-bar {
+    background-color: white !important;
+}
+::ng-deep .subtab .mat-tab-list .mat-tab-label-content {
+    color: white;
+}
+
 .callDetailHeader {
     padding: 4px;
+    border-bottom: 1px solid #CCC;
+}
+
+.httpErrorCode {
+    float: right;
 }
 
 ::ng-deep .mat-tab-label {
     height: 24px !important;
 }
 
+.callDetailIframeResponseBody {
+    border: 0px;
+    width: 100%;
+    height: 100%;
+}

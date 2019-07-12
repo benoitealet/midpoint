@@ -23,7 +23,10 @@ import {MomentModule} from 'ngx-moment';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NavigationComponent} from './navigation/navigation.component';
 import {CdkColumnDef, CdkTableModule} from "@angular/cdk/table";
-import { CallDetailComponent } from './main/call-detail/call-detail.component';
+import {CallDetailComponent} from './main/call-detail/call-detail.component';
+import {JsonViewerComponent} from "./main/call-detail/json-viewer/json-viewer.component";
+import {BodyViewerComponent} from "./main/call-detail/body-viewer/body-viewer.component";
+import {HeaderViewerComponent} from "./main/call-detail/header-viewer/header-viewer.component";
 
 @NgModule({
     declarations: [
@@ -33,7 +36,10 @@ import { CallDetailComponent } from './main/call-detail/call-detail.component';
         ProxyConfigComponent,
         ProxyAddPopupComponent,
         NavigationComponent,
-        CallDetailComponent
+        CallDetailComponent,
+        JsonViewerComponent,
+        BodyViewerComponent,
+        HeaderViewerComponent
     ],
     imports: [
         BrowserModule,
@@ -52,14 +58,14 @@ import { CallDetailComponent } from './main/call-detail/call-detail.component';
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
+        MatTabsModule,
         MatTableModule,
         CdkTableModule,
-        MatTabsModule
     ],
     entryComponents: [
         ProxyAddPopupComponent
     ],
-    providers:[CdkColumnDef],
+    providers: [CdkColumnDef],
     bootstrap: [AppComponent]
 })
 export class AppModule {
