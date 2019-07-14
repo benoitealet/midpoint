@@ -1,35 +1,48 @@
-import { Component, OnInit } from '@angular/core';
-import {faUser, faUserCog} from "@fortawesome/free-solid-svg-icons";
+import {Component, OnInit} from '@angular/core';
+import {faUser, faUserCog, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import {LoginService} from "../login.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss']
+    selector: 'app-navigation',
+    templateUrl: './navigation.component.html',
+    styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent implements OnInit {
 
-  protected title: String = 'Midpoint';
+    title: String = 'Midpoint';
 
-  protected login: String = null;
-  protected admin: boolean = null;
+    login: String = null;
+    admin: boolean = null;
 
-  protected faUser = faUser;
-  protected faUserCog = faUserCog;
+    protected faUser = faUser;
+    protected faUserCog = faUserCog;
+    protected faSignOutAlt = faSignOutAlt;
 
-  constructor(private loginService: LoginService, private router: Router) {
+    constructor(private loginService: LoginService, private router: Router) {
 
-  }
-
-  async ngOnInit() {
-    let token = await this.loginService.getLogin();
-    if(!token) {
-      this.router.navigateByUrl('/login');
-    } else {
-      this.login = token.login;
-      this.admin = token.admin;
     }
-  }
+
+    async updateLogin(token) {
+        if (!token) {
+            this.login = null;
+            this.admin = null;
+        } else {
+            this.login = token.login;
+            this.admin = token.admin;
+        }
+    }
+
+    signout() {
+        this.loginService.logout();
+    }
+
+    async ngOnInit() {
+        let token = await this.loginService.getLogin();
+        this.updateLogin(token);
+        this.loginService.onChange((token) => {
+            this.updateLogin(token);
+        })
+    }
 
 }

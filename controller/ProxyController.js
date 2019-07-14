@@ -32,7 +32,7 @@ module.exports = {
             }
         });
         if (!proxyDefinition) {
-            res.status(400);
+            res.status(600);
             res.send({
                 error: 'This proxy could not be found',
                 slug: req.params.slug

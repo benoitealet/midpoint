@@ -1,10 +1,15 @@
 const model = require('../model/model.js');
+const Sequelize = require('sequelize');
 
 module.exports = {
     getList: async function (req, res, auth) {
         try {
             // TODO: Filter by admin/owner
-            let data = await model.Proxy.findAll({});
+            let data = await model.Proxy.findAll({
+                order: [
+                    ['name', 'ASC']
+                ]
+            });
             res.send(data);
         } catch (e) {
             res

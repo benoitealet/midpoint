@@ -1,5 +1,36 @@
 @import '../../styles';
 
+:host {
+    width: 100%;
+}
+
+mat-card {
+    width: 300px;
+    margin: 10% auto 0px auto;
+}
+
+.row {
+    width: 100%;
+    margin: 8px auto;
+
+    label {
+        width: 40%;
+        display: inline-block;
+    }
+
+    input {
+        width: 55%;
+        padding: 2px 5px;
+    }
+
+    button {
+        width: 100%;
+        color: white;
+    }
+
+}
+
+
 #btnLogin {
     background-color: $green;
 }

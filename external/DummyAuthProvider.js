@@ -1,10 +1,10 @@
 module.exports = {
 
     auth: (login, password) => {
-        if (login === 'test' && password === 'test') {
+        if (login === password) {
             return {
                 success: true,
-                admin: true
+                admin: login === 'admin'
             }
         } else {
             return {

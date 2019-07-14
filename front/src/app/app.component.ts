@@ -1,4 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
+import {DOCUMENT} from "@angular/common";
+import {environment} from "../environments/environment";
 
 
 @Component({
@@ -8,5 +10,10 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
 
+    constructor(@Inject(DOCUMENT) private document) {
+        if(!environment.backendUrl) {
+            environment.backendUrl = '//' + document.location.hostname + ':' + document.location.port;
+        }
 
+    }
 }

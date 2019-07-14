@@ -33,14 +33,12 @@ export class MainComponent implements OnInit {
     }
 
     async ngOnInit() {
-        const loggedIn = (await this.loginService.isLogged());
         let token = (await this.loginService.getLogin());
-        this.login = token.login;
-        this.admin = token.admin;
-
-        if (!loggedIn) {
+        if (!token) {
             this.router.navigateByUrl('/login');
         } else {
+            this.login = token.login;
+            this.admin = token.admin;
             this.loadProxyList();
         }
     }
@@ -64,7 +62,7 @@ export class MainComponent implements OnInit {
             if (error.status === 403) {
                 this.router.navigateByUrl('/login');
             } else {
-                this.error = 'Une erreur inconnue est survenue';
+                this.error = 'Unknown error occured';
                 console.log(error);
             }
         });
@@ -97,7 +95,7 @@ export class MainComponent implements OnInit {
                 if (error.status === 403) {
                     this.router.navigateByUrl('/login');
                 } else {
-                    this.error = 'Une erreur inconnue est survenue';
+                    this.error = 'Unknown error occured';
                     console.log(error);
                 }
             });

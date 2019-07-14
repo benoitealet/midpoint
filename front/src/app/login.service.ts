@@ -1,28 +1,45 @@
 import {Injectable} from '@angular/core';
 import {LocalStorage} from '@ngx-pwa/local-storage';
 import {JwtHelperService} from '@auth0/angular-jwt';
+import {Router} from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
 })
 export class LoginService {
 
+    private listeners: Array<Function> = [];
 
-    constructor(protected localStorage: LocalStorage) {
+    constructor(protected localStorage: LocalStorage, private router: Router) {
     }
 
     storeLogin(data): void {
         this.localStorage.setItem('auth', data).subscribe(() => {
-            console.log('stored');
+            const jwtHelper = new JwtHelperService();
+            this.listeners.forEach((f: Function) => {
+                f(jwtHelper.decodeToken(data.jwtToken));
+            });
+        });
+    }
+
+    logout(): void {
+        this.localStorage.removeItem('auth').subscribe(() => {
+            this.router.navigateByUrl('/login', { skipLocationChange: true });
+            this.listeners.forEach((f: Function) => {
+                f(null);
+            });
         });
     }
 
     getLogin(): Promise<any> {
         return new Promise((resolve, reject) => {
-
             this.localStorage.getItem('auth').subscribe((authData: any) => {
-                const jwtHelper = new JwtHelperService();
-                resolve(jwtHelper.decodeToken(authData.jwtToken));
+                if(authData) {
+                    const jwtHelper = new JwtHelperService();
+                    resolve(jwtHelper.decodeToken(authData.jwtToken));
+                } else {
+                    resolve(null);
+                }
             });
         });
 
@@ -31,28 +48,21 @@ export class LoginService {
     getJwtToken(): Promise<object> {
         return new Promise((resolve, reject) => {
             this.localStorage.getItem('auth').subscribe((authData: any) => {
-                resolve({
-                    login: authData.login,
-                    jwtToken: authData.jwtToken
-                });
-            });
-        });
-    }
-
-    isLogged(): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            this.localStorage.getItem('auth').subscribe((authData: any) => {
-                if (!authData) {
-                    resolve(false);
+                if(authData) {
+                    resolve({
+                        login: authData.login,
+                        jwtToken: authData.jwtToken
+                    });
                 } else {
-                    const jwtHelper = new JwtHelperService();
-                    resolve(!jwtHelper.isTokenExpired(authData.jwtToken));
+                    resolve(null);
                 }
 
             });
         });
     }
 
-
+    onChange(f: Function) {
+        this.listeners.push(f);
+    }
 }
 

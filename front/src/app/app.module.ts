@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {Inject, NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -10,7 +10,7 @@ import {MainComponent} from './main/main.component';
 import {ProxyConfigComponent} from './proxy-config/proxy-config.component';
 import {ProxyAddPopupComponent} from './proxy-config/proxy-add-popup/proxy-add-popup.component';
 import {
-    MatButtonModule,
+    MatButtonModule, MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
     MatIconModule, MatInputModule,
@@ -27,6 +27,8 @@ import {CallDetailComponent} from './main/call-detail/call-detail.component';
 import {JsonViewerComponent} from "./main/call-detail/json-viewer/json-viewer.component";
 import {BodyViewerComponent} from "./main/call-detail/body-viewer/body-viewer.component";
 import {HeaderViewerComponent} from "./main/call-detail/header-viewer/header-viewer.component";
+import {DOCUMENT} from "@angular/common";
+import {environment} from "../environments/environment";
 
 @NgModule({
     declarations: [
@@ -48,6 +50,7 @@ import {HeaderViewerComponent} from "./main/call-detail/header-viewer/header-vie
         ReactiveFormsModule,
         FormsModule,
         MatDialogModule,
+        MatCardModule,
         BrowserAnimationsModule,
         MomentModule,
         FontAwesomeModule,
@@ -69,4 +72,6 @@ import {HeaderViewerComponent} from "./main/call-detail/header-viewer/header-vie
     bootstrap: [AppComponent]
 })
 export class AppModule {
+
+
 }

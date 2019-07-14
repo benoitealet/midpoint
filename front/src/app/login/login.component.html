@@ -1,19 +1,22 @@
-<div class="container">
-    <div class="row justify-content-md-center mt-5">
-        <form class="col-6" (submit)="onSubmit($event)" [formGroup]="loginForm">
+<mat-card>
+    <mat-card-content>
+        <form (submit)="onSubmit()" [formGroup]="loginForm">
 
             <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="fldLogin">Login</label>
-                <input type="text" class="form-control" id="fldLogin" placeholder="Login" formControlName="login">
+                <input type="text" id="fldLogin" placeholder="Login" formControlName="login">
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="fldPassword">Mot de passe</label>
-                <input type="password" class="form-control" id="fldPassword" placeholder="Password"
+                <input type="password" id="fldPassword" placeholder="Password"
                        formControlName="password">
             </div>
-            <button id="btnLogin" type="submit" class="btn d-block w-100 text-white">Connexion</button>
+
+            <div class="row">
+                <button mat-button id="btnLogin" type="submit" color="success">Connexion</button>
+            </div>
         </form>
-    </div>
-</div>
+    </mat-card-content>
+</mat-card>

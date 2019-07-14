@@ -9,5 +9,7 @@ export class ProxyModel {
     owner: string;
     delay: number;
     allowedTo: string[];
-    createdAt: Date
+    createdAt: Date;
+
+    lastUsage: Date; // only in proxy config.
 }

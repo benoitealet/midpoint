@@ -19,7 +19,7 @@ export class ProxyConfigComponent implements OnInit {
     faPlusCircle = faPlusCircle;
     faEdit = faEdit;
 
-    displayedColumns: string[] = ['name', 'slug', 'owner', 'destination', 'delay', 'allowedTo', 'createdAt', 'actions'];
+    displayedColumns: string[] = ['name', 'slug', 'owner', 'destination', 'delay', 'allowedTo', 'createdAt', 'lastUsageAt', 'actions'];
     proxies: ProxyModel[];
     loading: boolean = false;
     error: string = null;
@@ -32,16 +32,14 @@ export class ProxyConfigComponent implements OnInit {
     }
 
     async ngOnInit() {
-        const loggedIn = (await this.loginService.isLogged());
-        if (!loggedIn) {
-            this.router.navigateByUrl('/login');
+        let token = (await this.loginService.getLogin());
+        if (!token) {
+            this.router.navigateByUrl('/login', { skipLocationChange: true });
         } else {
             this.loadProxies();
+            this.login = token.login;
+            this.admin = token.admin;
         }
-
-        let token = (await this.loginService.getLogin());
-        this.login = token.login;
-        this.admin = token.admin;
     }
 
     private async loadProxies() {
@@ -63,7 +61,7 @@ export class ProxyConfigComponent implements OnInit {
             this.loading = false;
         }, error => {
             if (error.status === 403) {
-                this.router.navigateByUrl('/login');
+                this.router.navigateByUrl('/login', { skipLocationChange: true });
             } else {
                 this.error = 'Une erreur inconnue est survenue';
                 console.log(error);
@@ -99,7 +97,7 @@ export class ProxyConfigComponent implements OnInit {
             this.loadProxies();
         }, error => {
             if (error.status === 403) {
-                this.router.navigateByUrl('/login');
+                this.router.navigateByUrl('/login', { skipLocationChange: true });
             } else {
                 this.error = 'Une erreur inconnue est survenue';
                 console.log(error);

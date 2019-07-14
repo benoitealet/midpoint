@@ -14,14 +14,14 @@ import {Router} from "@angular/router";
 })
 export class ProxyAddPopupComponent implements OnInit {
 
-    protected error: string = null;
-    protected errors: string[] = null;
+    error: string = null;
+    errors: string[] = null;
 
-    protected submitted = false;
+    submitted = false;
 
-    protected formNewProxy: FormGroup;
+    formNewProxy: FormGroup;
 
-    protected availableEncodings: string[] = [
+    availableEncodings: string[] = [
         'utf-8',
         'ascii',
         'latin1'
@@ -94,7 +94,7 @@ export class ProxyAddPopupComponent implements OnInit {
 
             }, error => {
                 if (error.status === 403) {
-                    this.router.navigateByUrl('/login');
+                    this.router.navigateByUrl('/login', { skipLocationChange: true });
                 } else {
                     this.error = 'An unknown error occured';
                     this.errors = null;

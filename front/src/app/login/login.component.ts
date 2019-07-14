@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
 
     error: string = null;
 
-    protected loginForm = new FormGroup({
+    loginForm = new FormGroup({
         login: new FormControl('', Validators.minLength(8)),
         password: new FormControl(''),
     });
@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
             JSON.stringify(this.loginForm.value),
             httpOptions
         ).subscribe((data: any) => {
-            console.log(data);
             if (data.error) {
                 console.log(data.error);
                 this.error = data.error;
@@ -46,12 +45,16 @@ export class LoginComponent implements OnInit {
                     login: this.loginForm.get('login').value
                 });
 
-                this.router.navigateByUrl('/');
+                this.router.navigateByUrl('/', { skipLocationChange: true });
 
             }
 
         }, error => {
-            this.error = 'Une erreur inconnue est survenue';
+            if(error.error && error.error.message) {
+                this.error = error.error.message;
+            } else {
+                this.error = 'Unexpected error';
+            }
             console.log(error);
         });
     }

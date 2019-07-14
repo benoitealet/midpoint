@@ -4,7 +4,7 @@
         <span>{{title}}</span>
     </button>
 
-    <button mat-button routerLink="proxyConfig">Configuration proxy</button>
+    <button mat-button routerLink="proxyConfig" skipLocationChange="true">Config</button>
 
 
 <!--    <mat-menu #moreVertMenu="matMenu">-->
@@ -23,5 +23,9 @@
         <fa-icon [icon]="faUser" *ngIf="!admin"></fa-icon>
         <fa-icon [icon]="faUserCog" *ngIf="admin"></fa-icon>
         {{ login }}
+        <button mat-flat-button color="primary" *ngIf="login" (click)="signout()">
+            <fa-icon [icon]="faSignOutAlt" class=""></fa-icon>
+            Logout
+        </button>
     </div>
 </mat-toolbar>

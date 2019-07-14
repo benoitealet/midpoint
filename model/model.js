@@ -111,6 +111,7 @@ let Header = sequelize.define('header', {
 });
 
 module.exports = {
+    Sequelize,
     Header,
     Http,
     Proxy,

@@ -62,7 +62,7 @@ export class CallDetailComponent implements OnInit {
                 this.headers = data;
             }, error => {
                 if (error.status === 403) {
-                    this.router.navigateByUrl('/login');
+                    this.router.navigateByUrl('/login', { skipLocationChange: true });
                 } else {
                     console.log(error);
                 }

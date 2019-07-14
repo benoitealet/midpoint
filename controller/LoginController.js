@@ -15,14 +15,14 @@ module.exports = {
 
                 } else {
                     res.send(JSON.stringify({
-                        error: 'Login/mot de passe invalide'
+                        error: 'Invalid login/password'
                     }));
                 }
 
             } else {
 
                 res.send(JSON.stringify({
-                    error: 'Requête incomplète'
+                    error: 'Login or password is missing'
                 }));
             }
         } catch (e) {

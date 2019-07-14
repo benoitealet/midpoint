@@ -4,7 +4,11 @@ const Op = require('sequelize').Op;
 module.exports = {
     getList: async function (req, res, auth) {
         try {
-            let data = await model.Proxy.findAll({});
+            let data = await model.Proxy.findAll({
+                attributes: Object.keys(model.Proxy.tableAttributes).concat([
+                    [model.Sequelize.literal('(SELECT MAX(`https`.`date`) FROM `https` WHERE `https`.`proxy` = `proxy`.`id`)'), 'lastUsage']
+                ])
+            });
             res.send(data);
         } catch (e) {
             res
