@@ -9,15 +9,19 @@ module.exports.createServer = function (httpPort, cert, routing) {
         try {
             const app = express();
 
-            app.use(helmet())
+            app.use(helmet());
 
-            /*
-             app.use(function (req, res, next) {
-             res.header("Access-Control-Allow-Origin", "*");
-             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-             next();
-             });
-             */
+
+            app.use(function (req, res, next) {
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "*");
+
+                res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+                res.header("Pragma", "no-cache");
+                res.header("Expires", 0);
+
+                next();
+            });
 
 
             app.options('*', cors()); // include before other routes

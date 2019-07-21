@@ -1,5 +1,6 @@
 const JwtTokenService = require('../service/jwtTokenService.js');
 const AuthService = require('../service/authService.js');
+const moment = require('moment');
 
 module.exports = {
     doLogin: function (req, res) {
@@ -10,7 +11,7 @@ module.exports = {
                 if (auth.success) {
 
                     res.send(JSON.stringify({
-                        token: JwtTokenService.generateToken(req.body.login, auth.admin)
+                        token: JwtTokenService.generateToken(req.body.login, auth.admin, moment().toISOString(), 1)
                     }));
 
                 } else {

@@ -13,6 +13,25 @@ checkAuth = function (callback) {
                     let auth = JwtTokenService.decodeToken(authToken.login, authToken.jwtToken);
                     if (auth) {
                         callback(req, res, auth);
+
+                        //console.log(Math.floor(Date.now() / 1000) - auth.iat);
+                        const lifespan = Math.floor(Date.now() / 1000) - auth.iat;
+
+
+                        if (lifespan > 20) {
+                            //regenerate token
+
+                            const generation = auth.generation+1;
+                            const updatedToken = JwtTokenService.generateToken(auth.login, auth.admin, auth.loginDate, generation);
+
+
+                            res.header('x-update-auth', JSON.stringify({
+                                jwtToken: updatedToken,
+                                login: auth.login,
+                            }));
+
+                        }
+
                     } else {
                         res.status(403).send('Invalid token');
                     }
@@ -51,7 +70,6 @@ module.exports = (app) => {
     app.get('/proxyList/callHeaders/:httpId', checkAuth(ProxyListController.getCallHeaders));
 
     app.all('/proxy/:slug/*', (req, res) => ProxyController.proxify(req, res, wsBroadcaster));
-
 
 
     app.use(function (req, res, next) {

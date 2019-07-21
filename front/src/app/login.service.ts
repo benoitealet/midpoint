@@ -14,6 +14,7 @@ export class LoginService {
     }
 
     storeLogin(data): void {
+        //console.log('Store data', data);
         this.localStorage.setItem('auth', data).subscribe(() => {
             const jwtHelper = new JwtHelperService();
             this.listeners.forEach((f: Function) => {
@@ -21,6 +22,8 @@ export class LoginService {
             });
         });
     }
+
+
 
     logout(): void {
         this.localStorage.removeItem('auth').subscribe(() => {
@@ -51,7 +54,7 @@ export class LoginService {
                 if(authData) {
                     resolve({
                         login: authData.login,
-                        jwtToken: authData.jwtToken
+                        jwtToken: authData.jwtToken,
                     });
                 } else {
                     resolve(null);

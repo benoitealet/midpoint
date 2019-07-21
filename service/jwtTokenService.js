@@ -1,6 +1,5 @@
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-const moment = require('moment');
 
 const privateKey = fs.readFileSync(__dirname + '/../config/jwt/jwtPrivate.key', 'utf8');
 const publicKey = fs.readFileSync(__dirname + '/../config/jwt/jwtPublic.key', 'utf8');
@@ -8,15 +7,16 @@ const publicKey = fs.readFileSync(__dirname + '/../config/jwt/jwtPublic.key', 'u
 
 module.exports = {
 
-    generateToken(login, admin) {
+    generateToken(login, admin, loginDate, generation) {
         const i = 'Midpoint';          // Issuer
         const s = login;        // Subject
         const a = login + '@midpoint'; // Audience
 
         let payload = {
             login: login,
-            loginDate: moment().toISOString(),
-            admin: admin
+            loginDate: loginDate,
+            admin: admin,
+            generation: generation
         };
 
         let signOptions = {

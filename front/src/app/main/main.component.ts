@@ -35,7 +35,7 @@ export class MainComponent implements OnInit {
     async ngOnInit() {
         let token = (await this.loginService.getLogin());
         if (!token) {
-            this.router.navigateByUrl('/login');
+            this.router.navigateByUrl('/login', { skipLocationChange: true });
         } else {
             this.login = token.login;
             this.admin = token.admin;
@@ -60,7 +60,7 @@ export class MainComponent implements OnInit {
             this.proxyList = data;
         }, error => {
             if (error.status === 403) {
-                this.router.navigateByUrl('/login');
+                this.router.navigateByUrl('/login', { skipLocationChange: true });
             } else {
                 this.error = 'Unknown error occured';
                 console.log(error);
@@ -93,7 +93,7 @@ export class MainComponent implements OnInit {
                 this.callsDataSource.data = data;
             }, error => {
                 if (error.status === 403) {
-                    this.router.navigateByUrl('/login');
+                    this.router.navigateByUrl('/login', { skipLocationChange: true });
                 } else {
                     this.error = 'Unknown error occured';
                     console.log(error);

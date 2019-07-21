@@ -13,8 +13,8 @@ $ yarn install
 $ node midpoint.js
 
 Start front (dev):
-in front-mjail folder:
+in front folder:
 $ yarn install
-$ yarn ng serve
+$ yarn build --watch 
 
-front will be accessible on http://localhost:4200 and will use backend on http://localhost:8080
+front will be accessible via the backend on http://localhost:8080 (or any other value set in config.json)

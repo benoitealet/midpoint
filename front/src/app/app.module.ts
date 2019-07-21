@@ -1,20 +1,25 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {Inject, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from "./login/login.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MainComponent} from './main/main.component';
 import {ProxyConfigComponent} from './proxy-config/proxy-config.component';
 import {ProxyAddPopupComponent} from './proxy-config/proxy-add-popup/proxy-add-popup.component';
 import {
-    MatButtonModule, MatCardModule,
+    MatButtonModule,
+    MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatIconModule, MatInputModule,
-    MatMenuModule, MatSelectModule, MatTableModule, MatTabsModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatTableModule,
+    MatTabsModule,
     MatToolbarModule
 } from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -27,8 +32,7 @@ import {CallDetailComponent} from './main/call-detail/call-detail.component';
 import {JsonViewerComponent} from "./main/call-detail/json-viewer/json-viewer.component";
 import {BodyViewerComponent} from "./main/call-detail/body-viewer/body-viewer.component";
 import {HeaderViewerComponent} from "./main/call-detail/header-viewer/header-viewer.component";
-import {DOCUMENT} from "@angular/common";
-import {environment} from "../environments/environment";
+import {HttpHeaderLoginUpdater} from "./httpInterceptor";
 
 @NgModule({
     declarations: [
@@ -68,7 +72,12 @@ import {environment} from "../environments/environment";
     entryComponents: [
         ProxyAddPopupComponent
     ],
-    providers: [CdkColumnDef],
+    providers: [CdkColumnDef,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpHeaderLoginUpdater,
+            multi: true
+        }],
     bootstrap: [AppComponent]
 })
 export class AppModule {
