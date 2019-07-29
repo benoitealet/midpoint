@@ -23,8 +23,6 @@ export class LoginService {
         });
     }
 
-
-
     logout(): void {
         this.localStorage.removeItem('auth').subscribe(() => {
             this.router.navigateByUrl('/login', { skipLocationChange: true });

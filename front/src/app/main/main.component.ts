@@ -3,7 +3,7 @@ import {ProxyModel} from "../proxyModel";
 import {CallModel} from "../callModel";
 import {LoginService} from "../login.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {Event, NavigationStart, Router} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {FormControl, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material";
@@ -30,6 +30,16 @@ export class MainComponent implements OnInit {
     proxySelectControl = new FormControl('', [Validators.required]);
 
     constructor(private loginService: LoginService, private http: HttpClient, private router: Router) {
+        this.router.events.subscribe((event: Event) => {
+            if (event instanceof NavigationStart) {
+                if(this.ws) {
+                    console.log('Close last ws because of page change');
+                    this.ws.close();
+                    this.ws = null;
+                }
+            }
+        });
+
     }
 
     async ngOnInit() {
@@ -71,8 +81,9 @@ export class MainComponent implements OnInit {
 
     async updateCallsList(proxy) {
         if(this.ws) {
-            console.log('Close last ws');
+            console.log('Close last ws because of select change (to ' + proxy + ')');
             this.ws.close();
+            this.ws = null;
         }
 
         if (proxy && proxy.id) {
@@ -101,17 +112,20 @@ export class MainComponent implements OnInit {
             });
 
             //prepare websocket
-            console.log('Listen WS on ', 'ws://localhost:8080/ws/proxy/' + proxy.id);
+            const wsurl = 'ws:'+environment.backendUrl+'/ws/proxy/' + proxy.id;
+            console.log('Listen WS on ', wsurl);
+            this.ws = new WebSocket(wsurl);
 
-            this.ws = new WebSocket('ws://localhost:8080/ws/proxy/' + proxy.id);
-
-            this.ws.onopen = (evOpen: Event) => {
+            this.ws.onopen = () => {
+                console.log('WS is now opened: ', wsurl);
                 this.ws.onmessage = (ev: MessageEvent) => {
                     const data = JSON.parse(ev.data);
                     if(data.type == 'call') {
                         const viewData = this.callsDataSource.data;
                         viewData.unshift(data.call);
                         this.callsDataSource.data = viewData;
+                    } else {
+                        this.loginService.storeLogin(data);
                     }
                 };
 
