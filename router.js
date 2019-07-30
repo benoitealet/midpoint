@@ -4,6 +4,8 @@ const ProxyController = require('./controller/ProxyController.js');
 const ProxyListController = require('./controller/ProxyListController.js');
 const WebsocketController = require('./controller/WebsocketController.js');
 const JwtTokenService = require('./service/jwtTokenService.js');
+const express = require('express');
+
 checkAuth = function (callback) {
     return (req, res) => {
         if (req.headers.authorization) {
@@ -52,6 +54,9 @@ checkAuth = function (callback) {
 module.exports = (app) => {
     app.disable('x-powered-by');
 
+    app.all('/proxy/:slug/*', (req, res) => ProxyController.proxify(req, res, wsBroadcaster));
+
+    app.use(express.json());
     app.use('/', require('express').static(__dirname + '/front/dist/midpoint/'));
 
     const expressJs = require('express-ws')(app);
@@ -69,9 +74,6 @@ module.exports = (app) => {
     app.get('/proxyList/list', checkAuth(ProxyListController.getList));
     app.get('/proxyList/calls/:proxyId', checkAuth(ProxyListController.getCalls));
     app.get('/proxyList/callHeaders/:httpId', checkAuth(ProxyListController.getCallHeaders));
-
-    app.all('/proxy/:slug/*', (req, res) => ProxyController.proxify(req, res, wsBroadcaster));
-
 
     app.use(function (req, res, next) {
         res.status(404).send('Sorry can\'t find that!');

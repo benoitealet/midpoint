@@ -11,7 +11,6 @@ module.exports.createServer = function (httpPort, cert, routing) {
 
             app.use(helmet());
 
-
             app.use(function (req, res, next) {
                 res.header("Access-Control-Allow-Origin", "*");
                 res.header("Access-Control-Allow-Headers", "*");
@@ -26,10 +25,6 @@ module.exports.createServer = function (httpPort, cert, routing) {
 
             app.options('*', cors()); // include before other routes
             app.use(cors());
-
-            app.use(express.json());
-
-            app.use('/', express.static(__dirname + '/../public'));
 
             routing(app);
 
