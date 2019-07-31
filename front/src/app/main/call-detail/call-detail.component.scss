@@ -5,13 +5,16 @@
 
 mat-tab-group {
     overflow: auto;
-
+    flex-grow: 1;
 }
 
 ::ng-deep .mat-tab-body-wrapper {
     flex-grow: 1 !important;
 }
 
+::ng-deep .subtab  {
+    height: 100%;
+}
 ::ng-deep .subtab .mat-tab-body {
     max-height: 318px;
 }

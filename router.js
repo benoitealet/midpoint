@@ -11,7 +11,7 @@ checkAuth = function (callback) {
         if (req.headers.authorization) {
             const authToken = JSON.parse(req.headers.authorization);
             if (authToken && authToken.login && authToken.jwtToken) {
-                console.log("Request token:", authToken.jwtToken);
+                //console.log("Request token:", authToken.jwtToken);
                 try {
                     let auth = JwtTokenService.decodeToken(authToken.login, authToken.jwtToken);
                     if (auth) {
@@ -27,7 +27,7 @@ checkAuth = function (callback) {
                             const generation = auth.generation+1;
                             const updatedToken = JwtTokenService.generateToken(auth.login, auth.admin, auth.loginDate, generation);
 
-                            console.log("Renew token to:", updatedToken);
+                            //console.log("Renew token to:", updatedToken);
                             res.header('x-update-auth', JSON.stringify({
                                 jwtToken: updatedToken,
                                 login: auth.login,
