@@ -38,6 +38,10 @@ let Proxy = sequelize.define('proxy', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
+    retention: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
     allowedTo: {
         type: Sequelize.STRING(128),
     },

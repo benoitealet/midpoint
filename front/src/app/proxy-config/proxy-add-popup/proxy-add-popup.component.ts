@@ -43,6 +43,7 @@ export class ProxyAddPopupComponent implements OnInit {
             owner: new FormControl(data.owner, [Validators.required]),
             delay: new FormControl(data.delay, [Validators.required]),
             allowedTo: new FormControl(data.allowedTo, []),
+            retention: new FormControl(data.retention, [Validators.required]),
         });
 
     }
@@ -64,6 +65,7 @@ export class ProxyAddPopupComponent implements OnInit {
             data.destination = this.formNewProxy.get('destination').value;
             data.owner = this.formNewProxy.get('owner').value;
             data.delay = this.formNewProxy.get('delay').value;
+            data.retention = this.formNewProxy.get('retention').value;
             data.allowedTo = this.formNewProxy.get('allowedTo').value;
 
 

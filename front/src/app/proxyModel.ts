@@ -8,6 +8,7 @@ export class ProxyModel {
     destination: string;
     owner: string;
     delay: number;
+    retention: number;
     allowedTo: string[];
     createdAt: Date;
 

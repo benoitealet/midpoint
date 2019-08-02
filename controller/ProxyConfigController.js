@@ -28,6 +28,7 @@ module.exports = {
                 destination: req.body.destination.substring(0, 256),
                 owner: req.body.owner.substring(0, 256),
                 delay: req.body.delay,
+                retention: req.body.retention,
                 allowedTo: req.body.allowedTo ? req.body.allowedTo.substring(0, 256) : null
             }
 
@@ -78,6 +79,7 @@ module.exports = {
                 proxy.destination = req.body.destination.substring(0, 256);
                 proxy.owner = req.body.owner.substring(0, 256);
                 proxy.delay = req.body.delay;
+                proxy.retention = req.body.retention;
                 proxy.allowedTo = req.body.allowedTo ? req.body.allowedTo.substring(0, 256) : null;
 
                 await proxy.save();
