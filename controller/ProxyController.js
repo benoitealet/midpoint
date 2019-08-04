@@ -94,12 +94,16 @@ module.exports = {
 
             req.headers['host'] = require('url').parse(url).hostname;
 
+
+            const timeStart = Date.now();
             if(proxyDefinition.delay) {
                 //console.log('DELAY', url);
                 await timeout(proxyDefinition.delay);
             }
 
             //console.log('REQUEST', url);
+
+            let timeEnd = null;
             let response = {};
             try {
                 response = await axios({
@@ -113,6 +117,7 @@ module.exports = {
                         return res;
                     },
                 });
+                timeEnd = Date.now();
             } catch(e) {
                 console.log(e);
                 response = {
@@ -164,6 +169,10 @@ module.exports = {
                 http.responseBody = '/* Do not track enabled, no info stored */';
             }
 
+            http.time = null;
+            if(timeEnd) {
+                http.time = timeEnd - timeStart;
+            }
             http.responseStatus = response.status;
 
             res.status(response.status);

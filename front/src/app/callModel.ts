@@ -10,4 +10,5 @@ export class CallModel {
     responseBody: string;
     proxy: number;
     color: string;
+    time: number;
 }

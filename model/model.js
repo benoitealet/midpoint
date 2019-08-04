@@ -94,6 +94,9 @@ let Http = sequelize.define('http', {
     },
     color: {
         type: Sequelize.STRING(7),
+    },
+    time: {
+        type: Sequelize.INTEGER
     }
 });
 

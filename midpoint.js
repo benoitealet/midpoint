@@ -32,7 +32,7 @@ webServer
     console.log(e);
     process.exit(1);
 }).then((webServerService) => {
-    //clean.initClean(model, webServerService.routingService);
+    clean.initClean(model, webServerService.routingService);
 });
 
 

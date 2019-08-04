@@ -20,7 +20,7 @@ export class MainComponent implements OnInit {
 
     private ws: WebSocket = null;
 
-    displayedColumns: string[] = ['date', 'ipSource', 'requestVerb', 'requestUrl', 'responseStatus'];
+    displayedColumns: string[] = ['date', 'ipSource', 'requestVerb', 'requestUrl', 'responseStatus', 'time'];
     proxyList: ProxyModel[];
     callsDataSource = new MatTableDataSource<CallModel>();
     error: string = null;
