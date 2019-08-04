@@ -91,6 +91,9 @@ let Http = sequelize.define('http', {
             model: Proxy,
             key: 'id'
         }
+    },
+    color: {
+        type: Sequelize.STRING(7),
     }
 });
 

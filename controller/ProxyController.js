@@ -1,5 +1,6 @@
 const model = require('../model/model.js');
 const axios = require('axios');
+const ColorHash = require('color-hash');
 
 function getBody(req, max) {
     return new Promise((resolve, reject) => {
@@ -52,7 +53,7 @@ module.exports = {
             let hasHostHeader = false;
             let hasAnonymousInRequest = false;
             let hasAnonymousInResponse = false;
-
+            let hasColor = null;
             await http.save();
 
             let headers = [];
@@ -64,6 +65,12 @@ module.exports = {
                     }
                     if(key.toLowerCase() == 'x-midpoint-dnt') {
                         hasAnonymousInRequest = true;
+                    }
+                    if(key.toLowerCase() == 'x-midpoint-color') {
+                        hasColor = req.headers[key];
+                        if(!hasColor.match(/^#[0-9A-Fa-f]{6}$/)) {
+                            hasColor = null;
+                        }
                     }
                     headers.push({
                         name: key,
@@ -160,6 +167,12 @@ module.exports = {
             http.responseStatus = response.status;
 
             res.status(response.status);
+
+            if(hasColor) {
+                http.color = hasColor;
+            } else {
+                http.color = (new ColorHash()).hex(url);
+            }
 
             await http.save();
 

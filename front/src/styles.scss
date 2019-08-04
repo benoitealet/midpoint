@@ -30,6 +30,14 @@ body {
 .urlQuery {
     color: #EE00BB;
 }
+.urlColorPad {
+    display: inline-block;
+    border-radius: 5px;
+    width: 12px;
+    height: 12px;
+    margin-right: 2px;
+}
+
 
 .httpErrorCode {
     background-color: #CCCCCC;

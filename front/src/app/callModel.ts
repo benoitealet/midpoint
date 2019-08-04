@@ -9,4 +9,5 @@ export class CallModel {
     responseStatus: number;
     responseBody: string;
     proxy: number;
+    color: string;
 }

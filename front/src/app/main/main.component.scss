@@ -37,3 +37,14 @@ call-detail {
     height: 24px;
     cursor: pointer;
 }
+
+.websocketDisconnectedAlert {
+    background: white;
+    text-align: center;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    padding: 10px;
+    margin-left: -125px;
+    width: 250px;
+}
