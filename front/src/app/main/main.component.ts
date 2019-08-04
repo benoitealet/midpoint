@@ -33,7 +33,6 @@ export class MainComponent implements OnInit {
         this.router.events.subscribe((event: Event) => {
             if (event instanceof NavigationStart) {
                 if(this.ws) {
-                    console.log('Close last ws because of page change');
                     this.ws.close();
                     this.ws = null;
                 }
@@ -124,8 +123,18 @@ export class MainComponent implements OnInit {
                         const viewData = this.callsDataSource.data;
                         viewData.unshift(data.call);
                         this.callsDataSource.data = viewData;
-                    } else {
-                        this.loginService.storeLogin(data);
+                    } else if(data.type == 'clean') {
+                        let viewData = this.callsDataSource.data;
+                        viewData = viewData.filter(r => {
+                            return !data.list.includes(r.id);
+                        });
+                        if(this.selectedCallRow && this.selectedCallRow.id && data.list.includes(this.selectedCallRow.id)) {
+                            this.selectedCallRow = null;
+                        }
+                        this.callsDataSource.data = viewData;
+
+                    } else if(data.type == 'jwtRenew') {
+                        this.loginService.storeLogin(data.newToken);
                     }
                 };
 

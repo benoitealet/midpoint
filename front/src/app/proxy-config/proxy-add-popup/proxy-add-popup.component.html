@@ -78,8 +78,8 @@
 
         <div>
             <mat-form-field>
-                <mat-label>Retention (h)</mat-label>
-                <input matInput formControlName="retention" name="retention" type="number" min="1" max="240" step="1" required
+                <mat-label>Retention (minutes)</mat-label>
+                <input matInput formControlName="retention" name="retention" type="number" min="1" step="1" required
                        autocomplete="off" />
                 <mat-error *ngIf="submitted && formNewProxy.controls.retention.errors && formNewProxy.controls.retention.errors.required">
                     Required field

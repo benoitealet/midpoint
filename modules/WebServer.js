@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 module.exports.createServer = function (httpPort, cert, routing) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const app = express();
 
@@ -26,7 +26,7 @@ module.exports.createServer = function (httpPort, cert, routing) {
             app.options('*', cors()); // include before other routes
             app.use(cors());
 
-            routing(app);
+            const routingService = routing(app);
 
             let server;
             let mode = '';
@@ -52,7 +52,9 @@ module.exports.createServer = function (httpPort, cert, routing) {
                 console.log(mode + ' Listen on port', httpPort);
             });
 
-            resolve();
+            resolve({
+                'routingService': routingService
+            });
         } catch (e) {
             console.error('Error in WebServer creation', e);
             reject();

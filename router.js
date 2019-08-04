@@ -51,18 +51,19 @@ checkAuth = function (callback) {
     }
 }
 
-module.exports = (app) => {
+module.exports = (model) => (app) => {
     app.disable('x-powered-by');
 
+    const expressJs = require('express-ws')(app);
+    const wsBroadcaster = WebsocketController.getBroadcaster(expressJs);
     app.all('/proxy/:slug/*', (req, res) => ProxyController.proxify(req, res, wsBroadcaster));
 
     app.use(express.json());
     app.use('/', require('express').static(__dirname + '/front/dist/midpoint/'));
 
-    const expressJs = require('express-ws')(app);
-    const wsBroadcaster = WebsocketController.getBroadcaster(expressJs);
 
-    app.ws('/ws/proxy/:proxyId', WebsocketController.init);
+
+    app.ws('/ws/proxy/:proxyId', WebsocketController.init(model));
 
     app.post('/doLogin', LoginController.doLogin);
 
@@ -78,5 +79,9 @@ module.exports = (app) => {
     app.use(function (req, res, next) {
         res.status(404).send('Sorry can\'t find that!');
     });
+
+    return {
+        'broadcaster': wsBroadcaster
+    }
 
 }

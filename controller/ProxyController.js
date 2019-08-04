@@ -45,11 +45,13 @@ module.exports = {
                 requestVerb: req.method,
                 requestUrl: req.params['0'],
                 requestQuery: require('url').parse(req.url,false).query,
-                requestBody: body,
+                requestBody: null,
                 proxy: proxyDefinition.id
             });
 
             let hasHostHeader = false;
+            let hasAnonymousInRequest = false;
+            let hasAnonymousInResponse = false;
 
             await http.save();
 
@@ -60,6 +62,9 @@ module.exports = {
                     if(key.toLowerCase() == 'host') {
                         hasHostHeader = true;
                     }
+                    if(key.toLowerCase() == 'x-midpoint-dnt') {
+                        hasAnonymousInRequest = true;
+                    }
                     headers.push({
                         name: key,
                         value: req.headers[key],
@@ -69,16 +74,25 @@ module.exports = {
                 }
             }
 
+            // after parsing all headers, we dont know the order before
+            if(!hasAnonymousInRequest) {
+                http.requestBody = body;
+            } else {
+                http.requestBody = '/* Do not track enabled, no info stored */';
+            }
+
+            await http.save();
+
             const url = proxyDefinition.destination + '/' + req.params['0'];
 
             req.headers['host'] = require('url').parse(url).hostname;
 
             if(proxyDefinition.delay) {
-                console.log('DELAY', url);
+                //console.log('DELAY', url);
                 await timeout(proxyDefinition.delay);
             }
 
-            console.log('REQUEST', url);
+            //console.log('REQUEST', url);
             let response = {};
             try {
                 response = await axios({
@@ -99,11 +113,14 @@ module.exports = {
                 }
             }
 
-            console.log('RESPONSE', url, {status: response.status});
+            //console.log('RESPONSE', url, {status: response.status});
 
             for (let key in response.headers) {
                 // check if the property/key is defined in the object itself, not in parent
                 if (response.headers.hasOwnProperty(key)) {
+                    if(key.toLowerCase() == 'x-midpoint-dnt') {
+                        hasAnonymousInResponse = true;
+                    }
                     headers.push({
                         name: key,
                         value: response.headers[key],
@@ -114,7 +131,32 @@ module.exports = {
                 }
             }
 
-            http.responseBody = response.data;
+            if(hasAnonymousInRequest || hasAnonymousInResponse) {
+                headers = [];
+            }
+
+            if(hasAnonymousInRequest) {
+                headers.push({
+                    name: 'x-midpoint-dnt',
+                    http: http.id,
+                    type: 'REQUEST'
+                });
+            }
+
+            if(hasAnonymousInResponse) {
+                headers.push({
+                    name: 'x-midpoint-dnt',
+                    http: http.id,
+                    type: 'RESPONSE'
+                });
+            }
+
+            if(!hasAnonymousInRequest && !hasAnonymousInResponse) {
+                http.responseBody = response.data;
+            } else {
+                http.responseBody = '/* Do not track enabled, no info stored */';
+            }
+
             http.responseStatus = response.status;
 
             res.status(response.status);
@@ -131,8 +173,8 @@ module.exports = {
             });
 
             res.end(response.data);
-            model.Header.bulkCreate(headers);
 
+            model.Header.bulkCreate(headers);
 
         }
     }
