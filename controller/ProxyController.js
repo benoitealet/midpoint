@@ -88,7 +88,8 @@ module.exports = {
             } else {
                 http.requestBody = '/* Do not track enabled, no info stored */';
             }
-
+            
+            const url = proxyDefinition.destination + '/' + req.params['0'];
             if(hasColor) {
                 http.color = hasColor;
             } else {
@@ -106,7 +107,7 @@ module.exports = {
                 return allowedTo.includes(client.auth.sub);
             });
 
-            const url = proxyDefinition.destination + '/' + req.params['0'];
+
 
             req.headers['host'] = require('url').parse(url).hostname;
 
