@@ -59,7 +59,12 @@
         <ng-container matColumnDef="time">
             <th mat-header-cell *matHeaderCellDef> Time (ms)</th>
             <td mat-cell *matCellDef="let element">
-                {{ element.time }}
+                <ng-container *ngIf="element.time">
+                    {{ element.time }}
+                </ng-container>
+                <ng-container *ngIf="!element.time">
+                    ...
+                </ng-container>
             </td>
         </ng-container>
 

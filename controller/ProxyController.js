@@ -47,6 +47,7 @@ module.exports = {
                 requestUrl: req.params['0'],
                 requestQuery: require('url').parse(req.url,false).query,
                 requestBody: null,
+                responseBody: '',
                 proxy: proxyDefinition.id
             });
 
@@ -88,7 +89,22 @@ module.exports = {
                 http.requestBody = '/* Do not track enabled, no info stored */';
             }
 
+            if(hasColor) {
+                http.color = hasColor;
+            } else {
+                http.color = (new ColorHash()).hex(url);
+            }
+
             await http.save();
+
+            wsDispatcher.broadcast(JSON.stringify({
+                type: 'call',
+                call: http
+            }), (client) => {
+                const allowedTo = proxyDefinition.allowedTo?proxyDefinition.allowedTo.split(';'):[];
+                allowedTo.push(proxyDefinition.owner);
+                return allowedTo.includes(client.auth.sub);
+            });
 
             const url = proxyDefinition.destination + '/' + req.params['0'];
 
@@ -177,11 +193,7 @@ module.exports = {
 
             res.status(response.status);
 
-            if(hasColor) {
-                http.color = hasColor;
-            } else {
-                http.color = (new ColorHash()).hex(url);
-            }
+
 
             await http.save();
 

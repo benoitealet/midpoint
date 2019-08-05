@@ -131,7 +131,22 @@ export class MainComponent implements OnInit {
                     const data = JSON.parse(ev.data);
                     if (data.type == 'call') {
                         const viewData = this.callsDataSource.data;
-                        viewData.unshift(data.call);
+                        let found = false;
+                        for(let i = 0; i < viewData.length; i++) {
+                            if(viewData[i].id === data.call.id) {
+                                viewData[i] = data.call;
+                                found = true;
+
+                                if(this.selectedCallRow && this.selectedCallRow.id === data.call.id) {
+                                    // force update selected row, will trigger headers tab reload
+                                    this.selectedCallRow = null;
+                                    this.selectedCallRow = data.call;
+                                }
+                            }
+                        }
+                        if(!found) {
+                            viewData.unshift(data.call);
+                        }
                         this.callsDataSource.data = viewData;
                     } else if (data.type == 'clean') {
                         let viewData = this.callsDataSource.data;
