@@ -5,3 +5,4 @@
 /config/config.json
 /.idea
 *.sqlite
+external/*.js

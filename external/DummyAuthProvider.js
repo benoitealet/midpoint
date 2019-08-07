@@ -1,15 +1,17 @@
 module.exports = {
 
     auth: (login, password) => {
-        if (login === password) {
-            return {
-                success: true,
-                admin: login === 'admin'
+        return new Promise((resolve, reject) => {
+            if (login === password) {
+                resolve({
+                    success: true,
+                    admin: login === 'admin'
+                });
+            } else {
+                resolve({
+                    success: false
+                });
             }
-        } else {
-            return {
-                success: false
-            }
-        }
+        });
     }
 };

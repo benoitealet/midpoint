@@ -3,11 +3,11 @@ const AuthService = require('../service/authService.js');
 const moment = require('moment');
 
 module.exports = {
-    doLogin: function (req, res) {
+    doLogin: async function (req, res) {
         try {
 
             if (req.body && req.body.login && req.body.password) {
-                const auth = AuthService.auth(req.body.login, req.body.password);
+                const auth = await AuthService.auth(req.body.login, req.body.password);
                 if (auth.success) {
 
                     res.send(JSON.stringify({

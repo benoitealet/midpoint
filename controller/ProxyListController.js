@@ -8,7 +8,6 @@ function isProxyAllowed(p, auth) {
     if (auth.admin || p.owner == auth.login) {
         return true;
     } else {
-        console.log(p);
         const allowedTo = p.allowedTo.split(';').map(s => s.trim());
         return allowedTo.includes(auth.login);
     }
