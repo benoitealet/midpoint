@@ -31,7 +31,7 @@ module.exports = {
 
         ws.on('close', function () {
             clearInterval(timerJwt);
-            console.log('closed websocket');
+            //console.log('closed websocket');
         });
 
         ws.on('message', async function (msgString) {
@@ -51,10 +51,12 @@ module.exports = {
                                     if (auth.admin || proxy.owner == auth.login) {
                                         //console.log('allowed because admin or owner', auth.admin, proxy.owner, auth.login);
                                         return true;
-                                    } else {
+                                    } else if(proxy.allowedTo) {
                                         //console.log('allowed because other', auth.admin, proxy.owner, auth.login);
                                         const allowedTo = proxy.allowedTo.split(';').map(s => s.trim());
                                         return allowedTo.includes(auth.login);
+                                    } else {
+                                        return false;
                                     }
                                 })();
 

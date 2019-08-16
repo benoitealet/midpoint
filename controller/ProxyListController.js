@@ -10,6 +10,8 @@ function isProxyAllowed(p, auth) {
     } else if(p.allowedTo) {
         const allowedTo = p.allowedTo.split(';').map(s => s.trim());
         return allowedTo.includes(auth.login);
+    } else {
+        return false;
     }
 }
 
