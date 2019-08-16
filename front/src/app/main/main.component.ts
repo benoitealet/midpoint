@@ -80,9 +80,9 @@ export class MainComponent implements OnInit {
 
 
     async updateCallsList(proxy) {
-        console.log('updateCallsList', proxy);
+        //console.log('updateCallsList', proxy);
         if (this.ws) {
-            console.log('Close last ws because of select change (to ' + proxy + ')');
+            //console.log('Close last ws because of select change (to ' + proxy + ')');
             this.ws.close(1000, "Deliberate disconnection");
             this.ws = null;
         }
@@ -116,17 +116,17 @@ export class MainComponent implements OnInit {
 
             //prepare websocket
             const wsurl = 'ws:' + environment.backendUrl + '/ws/proxy/' + proxy.id;
-            console.log('Listen WS on ', wsurl);
+            //console.log('Listen WS on ', wsurl);
 
             this.ws = new WebSocket(wsurl);
 
             this.ws.onerror = (ev: ErrorEvent): any => {
-                console.log('Connection refused');
+                //console.log('Connection refused');
                 this.disconnected = true;
             };
 
             this.ws.onopen = () => {
-                console.log('WS is now opened: ', wsurl);
+                //console.log('WS is now opened: ', wsurl);
                 this.ws.onmessage = (ev: MessageEvent) => {
                     const data = JSON.parse(ev.data);
                     if (data.type == 'call') {
@@ -168,7 +168,6 @@ export class MainComponent implements OnInit {
                 }));
 
                 this.ws.onclose = (ev: CloseEvent): any => {
-                    console.log(ev);
                     if(ev.code != 1000) {
                         this.disconnected = true;
                     }
