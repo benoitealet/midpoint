@@ -19,7 +19,7 @@ export class ProxyConfigComponent implements OnInit {
     faPlusCircle = faPlusCircle;
     faEdit = faEdit;
 
-    displayedColumns: string[] = ['name', 'slug', 'owner', 'destination', 'delay', 'allowedTo', 'createdAt', 'lastUsageAt', 'actions'];
+    displayedColumns: string[] = ['name', 'slug', 'destination', 'owner', 'delay', 'retention', 'allowedTo', 'createdAt', 'lastUsageAt', 'actions'];
     proxies: ProxyModel[];
     loading: boolean = false;
     error: string = null;

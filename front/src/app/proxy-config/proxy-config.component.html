@@ -21,13 +21,21 @@
 
     <ng-container matColumnDef="destination">
         <th mat-header-cell *matHeaderCellDef> Destination </th>
-        <td mat-cell *matCellDef="let element"> {{element.destination}} </td>
+        <td mat-cell *matCellDef="let element">
+            <div class="cell-overflow"> {{element.destination}} </div>
+        </td>
         <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <ng-container matColumnDef="delay">
-        <th mat-header-cell *matHeaderCellDef> Delay </th>
+        <th mat-header-cell *matHeaderCellDef> Delay (s) </th>
         <td mat-cell *matCellDef="let element"> {{element.delay}} </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <ng-container matColumnDef="retention">
+        <th mat-header-cell *matHeaderCellDef> Retention (m) </th>
+        <td mat-cell *matCellDef="let element"> {{element.retention}} </td>
         <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
@@ -45,7 +53,7 @@
 
     <ng-container matColumnDef="lastUsageAt">
         <th mat-header-cell *matHeaderCellDef> Last Usage At </th>
-        <td mat-cell *matCellDef="let element"> {{element.lastUsage | amParse:'YYYY-MM-DD HH:mm:ss.sss Z' | amDateFormat:'YYYY-MM-DD HH:mm'}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.lastUsage?(element.lastUsage | amParse:'YYYY-MM-DD HH:mm:ss.sss Z' | amDateFormat:'YYYY-MM-DD HH:mm'):'None or too old'}} </td>
         <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 

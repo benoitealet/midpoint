@@ -7,3 +7,16 @@
 .cell-right {
     text-align: right;
 }
+
+.cell-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 23vw;
+}
+
+.cell-overflow:hover {
+    text-overflow: clip;
+    white-space: normal;
+    word-break: break-all;
+}
