@@ -82,13 +82,6 @@ module.exports = {
                 }
             }
 
-            // after parsing all headers, we dont know the order before
-            if(!hasAnonymousInRequest) {
-                http.requestBody = body;
-            } else {
-                http.requestBody = '/* Do not track enabled, no info stored */';
-            }
-            
             const url = proxyDefinition.destination + '/' + req.params['0'];
             if(hasColor) {
                 http.color = hasColor;
@@ -182,8 +175,10 @@ module.exports = {
 
             if(!hasAnonymousInRequest && !hasAnonymousInResponse) {
                 http.responseBody = response.data;
+                http.requestBody = body;
             } else {
                 http.responseBody = '/* Do not track enabled, no info stored */';
+                http.requestBody = '/* Do not track enabled, no info stored */';
             }
 
             http.time = null;
