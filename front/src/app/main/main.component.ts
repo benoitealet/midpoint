@@ -115,7 +115,7 @@ export class MainComponent implements OnInit {
             });
 
             //prepare websocket
-            const wsurl = 'ws:' + environment.backendUrl + '/ws/proxy/' + proxy.id;
+            const wsurl = 'wss:' + environment.backendUrl + '/ws/proxy/' + proxy.id;
             //console.log('Listen WS on ', wsurl);
 
             this.ws = new WebSocket(wsurl);
