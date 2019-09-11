@@ -4,9 +4,9 @@ const ColorHash = require('color-hash');
 
 function getBody(req, max) {
     return new Promise((resolve, reject) => {
-        let data = '';
+        let data = Buffer.alloc(0);
         req.on('data', function (chunk) {
-            data += chunk
+            data  = Buffer.concat([data, chunk]);
             if (data.length > max) {
                 reject('Body too big');
             }
@@ -25,7 +25,7 @@ module.exports = {
     proxify: async function (req, res, wsDispatcher) {
         let timeRequest = new Date();
 
-        let body = await getBody(req, 128 * 1024);
+        let body = await getBody(req, 16 * 1024 * 1024);
 
         let proxyDefinition = await model.Proxy.findOne({
             where: {
@@ -132,6 +132,7 @@ module.exports = {
                 console.log(e);
                 response = {
                     status: 600,
+                    error: e.message
                 }
             }
 
@@ -174,8 +175,20 @@ module.exports = {
             }
 
             if(!hasAnonymousInRequest && !hasAnonymousInResponse) {
-                http.responseBody = response.data;
-                http.requestBody = body;
+                if(response.error) {
+                    http.responseBody = response.error;
+                } else if(response.data && response.data.length < 128*1024) {
+                    http.responseBody = response.data;
+                } else {
+                    http.responseBody = '/* Not stored, > 128kb */';
+                }
+
+                if(body.length < 128*1024) {
+                    http.requestBody = body.toString();
+                } else {
+                    http.requestBody = '/* Not stored, > 128kb */';
+                }
+
             } else {
                 http.responseBody = '/* Do not track enabled, no info stored */';
                 http.requestBody = '/* Do not track enabled, no info stored */';

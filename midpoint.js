@@ -1,5 +1,7 @@
 "use strict"
 
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+
 console.log('Starting midpoint');
 
 const config = require(__dirname + '/config/config.json');
