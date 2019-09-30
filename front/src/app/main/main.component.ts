@@ -7,6 +7,7 @@ import {Event, NavigationStart, Router} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {FormControl, Validators} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material";
+import {Location} from "@angular/common";
 
 @Component({
     selector: 'app-main',
@@ -29,7 +30,7 @@ export class MainComponent implements OnInit {
     currentProxy: number = null;
     proxySelectControl = new FormControl('', [Validators.required]);
 
-    constructor(private loginService: LoginService, private http: HttpClient, private router: Router) {
+    constructor(private loginService: LoginService, private http: HttpClient, private router: Router, private location: Location) {
         this.router.events.subscribe((event: Event) => {
             if (event instanceof NavigationStart) {
                 if (this.ws) {
@@ -81,6 +82,7 @@ export class MainComponent implements OnInit {
 
     async updateCallsList(proxy) {
         //console.log('updateCallsList', proxy);
+
         if (this.ws) {
             //console.log('Close last ws because of select change (to ' + proxy + ')');
             this.ws.close(1000, "Deliberate disconnection");
@@ -114,8 +116,13 @@ export class MainComponent implements OnInit {
                 }
             });
 
+            let wsScheme = 'ws:';
+            if(location.protocol == 'https:') {
+                wsScheme = 'wss:';
+            }
+
             //prepare websocket
-            const wsurl = 'wss:' + environment.backendUrl + '/ws/proxy/' + proxy.id;
+            const wsurl = wsScheme + environment.backendUrl + '/ws/proxy/' + proxy.id;
             //console.log('Listen WS on ', wsurl);
 
             this.ws = new WebSocket(wsurl);

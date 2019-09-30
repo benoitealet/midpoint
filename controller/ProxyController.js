@@ -40,12 +40,13 @@ module.exports = {
             });
         } else {
 
+            const requestQuery = require('url').parse(req.url,false).query;
             let http = model.Http.build({
                 date: timeRequest,
                 ipSource: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
                 requestVerb: req.method,
                 requestUrl: req.params['0'],
-                requestQuery: require('url').parse(req.url,false).query,
+                requestQuery: requestQuery,
                 requestBody: null,
                 responseBody: '',
                 proxy: proxyDefinition.id
@@ -82,7 +83,7 @@ module.exports = {
                 }
             }
 
-            const url = proxyDefinition.destination + '/' + req.params['0'];
+            const url = proxyDefinition.destination + '/' + req.params['0'] + (requestQuery?('?' + requestQuery):'');
             if(hasColor) {
                 http.color = hasColor;
             } else {
@@ -111,7 +112,7 @@ module.exports = {
                 await timeout(proxyDefinition.delay);
             }
 
-            //console.log('REQUEST', url);
+            console.log('REQUEST', url);
 
             let timeEnd = null;
             let response = {};
