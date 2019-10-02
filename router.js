@@ -76,6 +76,8 @@ module.exports = (model) => (app) => {
     app.get('/proxyList/calls/:proxyId', checkAuth(ProxyListController.getCalls));
     app.get('/proxyList/callHeaders/:httpId', checkAuth(ProxyListController.getCallHeaders));
 
+    app.get('/download/:type/:filename', ProxyListController.getFile);
+
     app.use(function (req, res, next) {
         res.status(404).send('Sorry can\'t find that!');
     });

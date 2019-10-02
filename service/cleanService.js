@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const fs = require('fs').promises;
 
 //https://gist.github.com/JamieMason/0566f8412af9fe6a1d470aa1e089a752
 const groupBy = key => array =>
@@ -45,11 +46,27 @@ async function clean(model, routerService) {
             http: data.map(h => h.id)
         }
     });
+
+    //suppression des fichiers dans storage
+    const storageDir = __dirname + '/../storage/';
+    await Promise.all(data.map(async (http) => {
+        let files = await fs.readdir(storageDir);
+        await Promise.all(files.map(async f => {
+            if(f.startsWith(http.id + '_')) {
+                console.log('Unlink ', storageDir + f);
+                await fs.unlink(storageDir + f);
+            }
+        }));
+    }));
+
+
     await model.Http.destroy({
         where: {
             id: data.map(h => h.id)
         }
     });
+
+
 }
 
 module.exports = {

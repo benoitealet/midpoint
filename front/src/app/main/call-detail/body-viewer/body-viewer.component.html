@@ -1,4 +1,7 @@
-<table class="bodyViewer-table">
+<div *ngIf="error != null">
+    {{error}}
+</div>
+<table class="bodyViewer-table" *ngIf="error == null">
     <thead>
         <tr>
             <th>Name</th>

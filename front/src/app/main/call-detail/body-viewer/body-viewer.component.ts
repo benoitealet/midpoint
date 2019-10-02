@@ -12,11 +12,17 @@ export class BodyViewerComponent implements OnChanges {
     @Input() data: string;
 
     parsed: object = null;
-
+    error: string;
     constructor() {
     }
 
     ngOnChanges() {
-        this.parsed = Querystring.parse(this.data);
+        try {
+            this.parsed = Querystring.parse(this.data);
+            this.error = null;
+        } catch(e) {
+            this.parsed = null;
+            this.error = e.message;
+        }
     }
 }

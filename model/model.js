@@ -79,11 +79,17 @@ let Http = sequelize.define('http', {
     requestBody: {
         type: Sequelize.TEXT
     },
+    requestFileName: {
+        type: Sequelize.STRING(256)
+    },
     responseStatus: {
         type: Sequelize.INTEGER(3)
     },
     responseBody: {
         type: Sequelize.TEXT
+    },
+    responseFileName: {
+        type: Sequelize.STRING(256)
     },
     proxy: {
         type: Sequelize.INTEGER,

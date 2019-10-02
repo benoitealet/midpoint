@@ -1,6 +1,8 @@
 const model = require('../model/model.js');
 const axios = require('axios');
 const ColorHash = require('color-hash');
+const fs = require('fs');
+const cryptoRandomString = require('crypto-random-string');
 
 function getBody(req, max) {
     return new Promise((resolve, reject) => {
@@ -181,13 +183,32 @@ module.exports = {
                 } else if(response.data && response.data.length < 128*1024) {
                     http.responseBody = response.data;
                 } else {
-                    http.responseBody = '/* Not stored, > 128kb */';
+                    const filename = http.id + '_' + cryptoRandomString({length: 64, characters: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'});
+                    const storageDir = __dirname + '/../storage/';
+
+                    fs.writeFile(storageDir + filename, response.data, (err) => {
+                        if(err) {
+                            console.warn(err);
+                        }
+                    });
+                    http.responseFileName = filename;
+                    http.responseBody = null;
                 }
 
                 if(body.length < 128*1024) {
                     http.requestBody = body.toString();
                 } else {
-                    http.requestBody = '/* Not stored, > 128kb */';
+
+                    const filename = http.id + '_' + cryptoRandomString({length: 64, characters: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'});
+                    const storageDir = __dirname + '/../storage/';
+
+                    fs.writeFile(storageDir + filename, response.data, (err) => {
+                        if(err) {
+                            console.warn(err);
+                        }
+                    });
+                    http.requestFileName = filename;
+                    http.requestBody = null;
                 }
 
             } else {

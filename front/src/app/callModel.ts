@@ -6,8 +6,10 @@ export class CallModel {
     requestUrl: string;
     requestQuery: string;
     requestBody: string;
+    requestFileName: string;
     responseStatus: number;
     responseBody: string;
+    responseFileName: string;
     proxy: number;
     color: string;
     time: number;

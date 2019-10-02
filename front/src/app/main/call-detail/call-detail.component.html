@@ -1,12 +1,14 @@
 <div class="callDetailHeader">
 
     <div class="httpErrorCode httpErrorCode_{{displayCall.responseStatus}}">
-        {{ displayCall.responseStatus?displayCall.responseStatus:'---'}}
+        {{ displayCall.responseStatus ? displayCall.responseStatus : '---'}}
     </div>
 
     <b>{{ displayCall.requestVerb}} </b>
     <span>
-        <span class="urlBase">{{displayProxy.destination}}/</span><span class="urlPath">{{displayCall.requestUrl}}</span><span class="urlQuery">{{displayCall.requestQuery?'?'+displayCall.requestQuery:''}}</span>
+        <span class="urlBase">{{displayProxy.destination}}/</span><span
+        class="urlPath">{{displayCall.requestUrl}}</span><span
+        class="urlQuery">{{displayCall.requestQuery ? '?' + displayCall.requestQuery : ''}}</span>
     </span>
 </div>
 
@@ -14,13 +16,18 @@
 <mat-tab-group class="callDetailTabsGroup">
     <mat-tab label="Request">
         <mat-tab-group class="subtab">
-            <mat-tab label="Raw">
+            <mat-tab label="File" *ngIf="displayCall.requestFileName != null">
+                <a target="_blank" href="/download/request/{{displayCall.requestFileName}}">
+                    Request body is too big, you can download it here
+                </a>
+            </mat-tab>
+            <mat-tab label="Raw" *ngIf="displayCall.requestFileName == null">
                 <pre>{{displayCall.requestBody}}</pre>
             </mat-tab>
-            <mat-tab label="JSON">
+            <mat-tab label="JSON" *ngIf="displayCall.requestFileName == null">
                 <json-viewer [json]="displayCall.requestBody"></json-viewer>
             </mat-tab>
-            <mat-tab label="UrlEncoded">
+            <mat-tab label="UrlEncoded" *ngIf="displayCall.requestFileName == null">
                 <body-viewer [data]="displayCall.requestBody"></body-viewer>
             </mat-tab>
             <mat-tab label="Headers">
@@ -31,13 +38,18 @@
 
     <mat-tab label="Response">
         <mat-tab-group class="subtab">
-            <mat-tab label="Raw">
+            <mat-tab label="File" *ngIf="displayCall.responseFileName != null">
+                <a target="_blank" href="/download/response/{{displayCall.responseFileName}}">
+                    Response body is too big, you can download it here
+                </a>
+            </mat-tab>
+            <mat-tab label="Raw" *ngIf="displayCall.responseFileName == null">
                 <pre>{{displayCall.responseBody}}</pre>
             </mat-tab>
-            <mat-tab label="JSON">
+            <mat-tab label="JSON" *ngIf="displayCall.responseFileName == null">
                 <json-viewer [json]="displayCall.responseBody"></json-viewer>
             </mat-tab>
-            <mat-tab label="Html">
+            <mat-tab label="Html" *ngIf="displayCall.responseFileName == null">
                 <iframe class="callDetailIframeResponseBody" [srcdoc]="displayCall.responseBody" sandbox></iframe>
             </mat-tab>
             <mat-tab label="Headers">
