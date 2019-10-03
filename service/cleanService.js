@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const fs = require('fs').promises;
+const fs = require('fs');
 
 //https://gist.github.com/JamieMason/0566f8412af9fe6a1d470aa1e089a752
 const groupBy = key => array =>
@@ -48,16 +48,34 @@ async function clean(model, routerService) {
     });
 
     //suppression des fichiers dans storage
-    const storageDir = __dirname + '/../storage/';
-    await Promise.all(data.map(async (http) => {
-        let files = await fs.readdir(storageDir);
-        await Promise.all(files.map(async f => {
-            if(f.startsWith(http.id + '_')) {
-                console.log('Unlink ', storageDir + f);
-                await fs.unlink(storageDir + f);
-            }
-        }));
-    }));
+
+    await new Promise((resolve, reject) => {
+        const storageDir = __dirname + '/../storage/';
+        data.forEach((http) => {
+            fs.readdir(storageDir, (err, files) => {
+                if(err) {
+                    console.log('Readdir:', err);
+                }
+                const allPromises = [];
+                files.forEach(f => {
+                    if(f.startsWith(http.id + '_')) {
+                        allPromises.push(new Promise((unlinkResolve, unlinkReject) =>
+                        {
+                            fs.unlink(storageDir + f, (err) => {
+                                if (err) {
+                                    console.log('Unlink:', err);
+                                    unlinkReject(err);
+                                } else {
+                                    unlinkResolve();
+                                }
+                            });
+                        }));
+                    }
+                });
+                Promise.all(allPromises).then(resolve).catch(reject);
+            });
+        });
+    });
 
 
     await model.Http.destroy({
