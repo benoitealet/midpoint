@@ -63,6 +63,7 @@ module.exports = {
                                 if(allowed) {
                                     ws.proxy = proxy;
                                     ws.auth = auth;
+                                    ws.proxyId =  req.params.proxyId;
                                 } else {
                                     console.log('User not allowed on this proxy');
                                 }
@@ -86,12 +87,15 @@ module.exports = {
 
     getBroadcaster: (expressJs) => {
         return {
-            broadcast: function (data, callbackFilter) {
+            broadcast: function (proxy, data, callbackFilter) {
+                console.log(proxy);
                 expressJs.getWss().clients.forEach((client) => {
-                    if (callbackFilter && callbackFilter(client)) {
-                        client.send(data);
-                    } else {
-                        console.log('rejected', data, client.auth);
+                    if(client.proxyId == proxy) {
+                        if (callbackFilter && callbackFilter(client)) {
+                            client.send(data);
+                        } else {
+                            //console.log('rejected', data, client.auth);
+                        }
                     }
                 });
             }

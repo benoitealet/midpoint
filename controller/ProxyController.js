@@ -94,7 +94,7 @@ module.exports = {
 
             await http.save();
 
-            wsDispatcher.broadcast(JSON.stringify({
+            wsDispatcher.broadcast(http.proxy, JSON.stringify({
                 type: 'call',
                 call: http
             }), (client) => {
@@ -182,7 +182,7 @@ module.exports = {
                     http.responseBody = response.error;
                 } else if(response.data && response.data.length < 128*1024) {
                     http.responseBody = response.data;
-                } else {
+                } else if(response.data) {
                     const filename = http.id + '_' + cryptoRandomString({length: 64, characters: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'});
                     const storageDir = __dirname + '/../storage/';
 
@@ -228,7 +228,7 @@ module.exports = {
 
             await http.save();
 
-            wsDispatcher.broadcast(JSON.stringify({
+            wsDispatcher.broadcast(http.proxy, JSON.stringify({
                 type: 'call',
                 call: http
             }), (client) => {
