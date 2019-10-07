@@ -174,7 +174,14 @@ export class MainComponent implements OnInit {
                     auth: jwtToken
                 }));
 
+                const keepAliveTimeout = setInterval(() => {
+                    this.ws.send(JSON.stringify({
+                        keepalive: ""
+                    }));
+                }, 10000);
+
                 this.ws.onclose = (ev: CloseEvent): any => {
+                    clearTimeout(keepAliveTimeout);
                     if(ev.code != 1000) {
                         this.disconnected = true;
                     }

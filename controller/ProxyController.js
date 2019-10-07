@@ -100,7 +100,7 @@ module.exports = {
             }), (client) => {
                 const allowedTo = proxyDefinition.allowedTo?proxyDefinition.allowedTo.split(';'):[];
                 allowedTo.push(proxyDefinition.owner);
-                return allowedTo.includes(client.auth.sub);
+                return client.auth.admin || allowedTo.includes(client.auth.login);
             });
 
 
@@ -234,7 +234,7 @@ module.exports = {
             }), (client) => {
                 const allowedTo = proxyDefinition.allowedTo?proxyDefinition.allowedTo.split(';'):[];
                 allowedTo.push(proxyDefinition.owner);
-                return allowedTo.includes(client.auth.sub);
+                return client.auth.admin || allowedTo.includes(client.auth.login);
             });
 
             res.end(response.data);

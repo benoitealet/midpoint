@@ -91,7 +91,7 @@ module.exports = {
                     if (callbackFilter && callbackFilter(client)) {
                         client.send(data);
                     } else {
-                        console.log('rejected', data);
+                        console.log('rejected', data, client.auth);
                     }
                 });
             }
