@@ -8,7 +8,7 @@
     "color-hash": "^1.0.3",
     "cors": "^2.8.5",
     "crypto-random-string": "^3.0.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-ws": "^4.0.0",
     "fs-extra": "^7.0.1",
     "helmet": "^3.16.0",
